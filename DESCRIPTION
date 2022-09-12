@@ -1,11 +1,18 @@
 Package: simuclustfactor
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: Simultaneous Clustering and Factorial Decomposition of Three-way Datasets
+Version: 0.0.1
+Authors@R: c(
+    person("Prosper", "Ablordeppey", role = c("aut", "cre"), email = "jeroen@berkeley.edu",
+      comment = c(ORCID = "0000-0002-5581-7005")),
+    person("Adelaide", "Freitas", role = "ctb", email = "adelaide@ua.pt",
+      comment = c(ORCID = "0000-0002-4685-1615")),
+    person("Giorgia", "Zaccaria", role = "ctb", email = "adelaide@ua.pt",
+      comment = c(ORCID = "0000-0001-9119-9104")))
+Maintainer: Prosper Ablordeppey <prablordeppey@gmail.com>
+Description:  performing tandem clustering and factor-decomposition procedures sequentially (TWCFTA and TWFCTA).
+              performing the clustering and factor decomposition procedures simultaneously (T3Clus and 3FKMeans).
+              performing combined T3Clus and 3FKMeans procedures simultaneously (CT3Clus).
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
