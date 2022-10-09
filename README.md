@@ -6,7 +6,13 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of simuclustfactor is to …
+The goal of simuclustfactor is to perform:
+
+-   tandem clustering and factor-decomposition procedures sequentially
+    (TWCFTA and TWFCTA).
+-   simultaneous clustering and factor decomposition procedures
+    simultaneously (T3Clus and 3FKMeans).
+-   combined T3Clus and 3FKMeans procedures simultaneously (CT3Clus).
 
 ## Installation
 
@@ -18,35 +24,88 @@ You can install the development version of simuclustfactor from
 devtools::install_github("prablordeppey/simuclustfactor-r")
 ```
 
-## Example
+## Implementations
 
-This is a basic example which shows you how to solve a common problem:
-
-# `{r example} # library(simuclustfactor) # ## basic example code #`
-
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+Synthetic Dataset Generation (Additive noise)
 
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+library(simuclustfactor)
+
+# dimensions of the tensor in full and reduced spaces
+I=8; J=5; K=4 # number objects, variables and occasions respectively
+G=3; Q=3; R=2 # number clusters, variable-factors and occasion-factors respectively
+data = generate_dataset(I, J, K, G, Q, R, mean=0, stdev=0.5, random_state=0)
+
+# get data attributes
+Y_g_qr = data$Y_g_qr  # centroids matrix in the reduced space
+Z_i_jk = data$Z_i_jk  # score/centroid matrix in the fullspace.
+X_i_jk = data$X_i_jk  # dataset with noise
+
+# ground-truth associations
+U_i_g = data$U_i_g  # binary stochastic membership matrix
+B_j_q = data$B_j_q  # variables factor matrix
+C_k_r = data$C_k_r  # occasions factor matrix
+
+# folding generated data matrices into tensors
+X_i_j_k = Fold(X_i_jk, mode=1, shape=c(I,J,K))
+Z_i_j_k = Fold(Z_i_jk, mode=1, shape=c(I,J,K))
+Y_g_q_r = Fold(Y_g_qr, mode=1, shape=c(G,Q,R))
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
+### Tandem Models
 
-You can also embed plots, for example:
+``` r
+# initialize the model
+tandem_model = tandem(random_state=NULL, verbose=TRUE, init='svd', n_max_iter=10, n_loops=10, tol=1e-5, U_i_g=NULL, B_j_q=NULL, C_k_r=NULL)
+```
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
+**TWCFTA**
 
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+``` r
+twcfta = fit.twcfta(tandem_model, X_i_jk, full_tensor_shape=c(I,J,K), reduced_tensor_shape=c(G,Q,R))
+
+# get values/attributes from the implementation with the '@' operator
+U_i_g0 = twcfta@U_i_g0  # initial membership matrix
+B_j_q0 = twcfta@B_j_q0  # initial variable-component matrix
+C_k_r0 = twcfta@C_k_r0  # initial occasion-component matrix
+U_i_g = twcfta@U_i_g  # final membership matrix
+B_j_q = twcfta@B_j_q  # final variable-component matrix
+C_k_r = twcfta@C_k_r  # final occasion-component matrix
+...
+```
+
+**TWFCTA**
+
+``` r
+twfcta = fit.twfcta(tandem_model, X_i_jk, full_tensor_shape=c(I,J,K), reduced_tensor_shape=c(G,Q,R))
+
+# get values/attributes from the implementation with the '@' operator
+U_i_g0 = twfcta@U_i_g0  # initial membership matrix
+B_j_q0 = twfcta@B_j_q0  # initial variable-component matrix
+C_k_r0 = twfcta@C_k_r0  # initial occasion-component matrix
+U_i_g = twfcta@U_i_g  # final membership matrix
+B_j_q = twfcta@B_j_q  # final variable-component matrix
+C_k_r = twfcta@C_k_r  # final occasion-component matrix
+...
+```
+
+### Simultaneous Models
+
+``` r
+# initialize the model
+simultaneous_model = simultaneous(random_state=NULL, verbose=TRUE, init='svd', n_max_iter=10, n_loops=10, tol=1e-5, U_i_g=NULL, B_j_q=NULL, C_k_r=NULL)
+```
+
+**T3Clus & 3FKMeans**
+
+``` r
+t3clus = fit.t3clus(simultaneous_model, X_i_jk, full_tensor_shape=c(I,J,K), reduced_tensor_shape=c(G,Q,R))
+tfkmeans = fit.3fkmeans(simul_model, X_i_jk, full_tensor_shape=c(I,J,K), reduced_tensor_shape=c(G,Q,R))
+```
+
+**CT3Clus**
+
+``` r
+ct3clus = fit.ct3clus(simultaneous_model, X_i_jk, full_tensor_shape=c(I,J,K), reduced_tensor_shape=c(G,Q,R), alpha=0.5)
+tfkmeans = fit.3fkmeans(simul_model, X_i_jk, full_tensor_shape=c(I,J,K), reduced_tensor_shape=c(G,Q,R))
+```
