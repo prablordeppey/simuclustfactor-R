@@ -28,7 +28,7 @@ t3clus = fit.t3clus(model, X_i_jk, c(8,5,4), c(3,3,2))
 
 }
 \references{
-\insertRef{t3Clus}{simuclustfactor}
 \insertRef{tucker1966}{simuclustfactor}
+\insertRef{t3clus}{simuclustfactor}
 \insertRef{VichiRocciKiers}{simuclustfactor}
 }

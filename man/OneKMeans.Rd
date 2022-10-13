@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{onekmeans}
 \alias{onekmeans}
-\title{Onerun of the K-means clustering technique}
+\title{One-run of the K-means clustering technique}
 \usage{
 onekmeans(Y_i_qr, G, U_i_g = NULL, seed = NULL)
 }
@@ -19,8 +19,9 @@ onekmeans(Y_i_qr, G, U_i_g = NULL, seed = NULL)
 updated membership matrix U_i_g.
 }
 \description{
-Initializes centroids based on input centroid or randomly. iterate once over
-input data to update the centroids assigning objects to the closest centroids.
+Initializes centroids based on a given membership function matrix or randomly.
+Iterate once over the input data to update the membership function matrix
+assigning objects to the closest centroids.
 }
 \examples{
 X_i_jk = generate_dataset(seed=0)$X_i_jk

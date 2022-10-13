@@ -43,7 +43,6 @@ simultaneous()
 
 }
 \references{
-\insertRef{t3Clus}{simuclustfactor}
 \insertRef{tucker1966}{simuclustfactor}
 \insertRef{VichiRocciKiers}{simuclustfactor}
 }

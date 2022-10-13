@@ -10,22 +10,22 @@ Simultaneous Model
 \section{Slots}{
 
 \describe{
-\item{\code{seed}}{numericORnull. Seed for random sequence generation. Defaults to None.}
+\item{\code{seed}}{numeric. Seed for random sequence generation. Defaults to None.}
 
 \item{\code{verbose}}{logical. Whether to display executions output or not. Defaults to False.}
 
-\item{\code{init}}{character. The parameter initialization method. Defaults to svd.}
+\item{\code{init}}{character. The parameter initialization method. Defaults to 'svd'.}
 
 \item{\code{n_max_iter}}{numeric. Maximum number of iterations. Defaults to 10.}
 
-\item{\code{n_loops}}{numeric. Number of random initializations to gurantee global results. Defaults to 10.}
+\item{\code{n_loops}}{numeric. Number of initialization to guarantee global results. Defaults to 10.}
 
 \item{\code{tol}}{numeric. Tolerance level/acceptable error. Defaults to 1e-5.}
 
-\item{\code{U_i_g}}{numericORnull. (I,G) initial stochastic membership function matrix.}
+\item{\code{U_i_g}}{numeric. (I,G) initial stochastic membership function matrix.}
 
-\item{\code{B_j_q}}{numericORnull. (J,Q) initial component weight matrix for variables.}
+\item{\code{B_j_q}}{numeric. (J,Q) initial component weight matrix for variables.}
 
-\item{\code{C_k_r}}{numericORnull. (K,R) initial component weight matrix for occasions.}
+\item{\code{C_k_r}}{numeric. (K,R) initial component weight matrix for occasions.}
 }}
 

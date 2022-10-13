@@ -25,14 +25,14 @@ setClassUnion("integerORnull", c("integer", "NULL"))
 #' @slot KmConverged numeric. Flag to check if algorithm converged for the Factor Decomposition.
 #' @slot nKmConverges numeric. Number of loops that converged for the K-means.
 #' @slot nFaConverges numeric. Number of loops that converged for the Factor decomposition.
-#' @slot TSS_full numeric. Total deviance in the fullspace.
+#' @slot TSS_full numeric. Total deviance in the full-space.
 #' @slot BSS_full numeric. Between deviance in the reduced-space.
 #' @slot RSS_full numeric. Residual deviance in the reduced-space.
 #' @slot PF_full numeric. PseudoF in the full-space.
 #' @slot TSS_reduced numeric. Total deviance in the reduced-space.
 #' @slot BSS_reduced numeric. Between deviance in the reduced-space.
 #' @slot RSS_reduced numeric. Residual deviance in the reduced-space.
-#' @slot PF_reduced numeric. PseudoF in the reducedspace.
+#' @slot PF_reduced numeric. PseudoF in the reduced-space.
 #' @slot PF numeric. Actual PseudoF value to obtain best loop.
 #' @slot Labels integer. Object cluster assignments.
 #' @slot FsKM numeric. Objective function values for the KM best iterate.
@@ -116,30 +116,26 @@ setClass("attributes.tandem",
 )
 
 
-setClassUnion("numericORnull", c("numeric", "NULL"))
-
 #' Tandem Class
 #'
-#' @slot verbose logical. Whether to display executions output or not. Defaults to False.
-#' @slot init character. The parameter initialization method. Defaults to svd.
-#' @slot n_max_iter numeric. Maximum number of iterations. Defaults to 10.
-#' @slot n_loops numeric. Number of random initializations to gurantee global results. Defaults to 10.
-#' @slot tol numeric. Tolerance level/acceptable error. Defaults to 1e-5.
-#' @slot U_i_g numericORnull. (I,G) initial stochastic membership function matrix.
-#' @slot B_j_q numericORnull. (J,Q) initial component weight matrix for variables.
-#' @slot C_k_r numericORnull. (K,R) initial component weight matrix for occasions.
 #' @slot seed Seed for random sequence generation. Defaults to None.
+#' @slot verbose logical. Whether to display executions output or not. Defaults to False.
+#' @slot init character. The parameter initialization method. Defaults to 'svd'.
+#' @slot n_max_iter numeric. Maximum number of iterations. Defaults to 10.
+#' @slot n_loops numeric. Number of initialization to guarantee global results. Defaults to 10.
+#' @slot tol numeric. Tolerance level/acceptable error. Defaults to 1e-5.
+#' @slot U_i_g numeric. (I,G) initial stochastic membership function matrix.
+#' @slot B_j_q numeric. (J,Q) initial component weight matrix for variables.
+#' @slot C_k_r numeric. (K,R) initial component weight matrix for occasions.
 #'
 #' @importFrom methods setClass
-#'
-#' @keywords internal
 #'
 #' @export
 #'
 setClass("tandem",
          slots=c(
-           seed='numericORnull',
            verbose='logical',
+           seed='numericORnull',
            init='character',
            n_max_iter='numeric',
            n_loops='numeric',

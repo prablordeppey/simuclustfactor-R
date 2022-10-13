@@ -43,7 +43,7 @@ Z_i_jk: Component scores in the full space.
 
 E_i_jk: Generated noise at the given noise level.
 
-X_i_jk: Dataset with noise level set to stdev specified.
+X_i_jk: Dataset with noise level set to noise_stdev specified.
 
 Y_g_qr: Centroids matrix in the reduced space.
 

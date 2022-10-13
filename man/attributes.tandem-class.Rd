@@ -42,7 +42,7 @@ Tandem results attributes
 
 \item{\code{nFaConverges}}{numeric. Number of loops that converged for the Factor decomposition.}
 
-\item{\code{TSS_full}}{numeric. Total deviance in the fullspace.}
+\item{\code{TSS_full}}{numeric. Total deviance in the full-space.}
 
 \item{\code{BSS_full}}{numeric. Between deviance in the reduced-space.}
 
@@ -56,7 +56,7 @@ Tandem results attributes
 
 \item{\code{RSS_reduced}}{numeric. Residual deviance in the reduced-space.}
 
-\item{\code{PF_reduced}}{numeric. PseudoF in the reducedspace.}
+\item{\code{PF_reduced}}{numeric. PseudoF in the reduced-space.}
 
 \item{\code{PF}}{numeric. Actual PseudoF value to obtain best loop.}
 

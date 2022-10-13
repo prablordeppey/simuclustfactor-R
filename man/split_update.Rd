@@ -26,6 +26,6 @@ U_i_g, the updated membership matrix.
 }
 \description{
 If there is an empty cluster share members of largest cluster with
-empty cluster via kmeans implementation.
+empty cluster via the k-means clustering technique
 }
 \keyword{internal}

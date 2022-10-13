@@ -29,5 +29,6 @@ tfkmeans = fit.3fkmeans(model, X_i_jk, c(8,5,4), c(3,3,2))
 }
 \references{
 \insertRef{tucker1966}{simuclustfactor}
+\insertRef{3FKMeans}{simuclustfactor}
 \insertRef{VichiRocciKiers}{simuclustfactor}
 }

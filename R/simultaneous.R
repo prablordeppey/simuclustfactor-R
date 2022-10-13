@@ -107,15 +107,15 @@ setClass("attributes.simultaneous",
 
 #' Simultaneous Model
 #'
-#' @slot seed numericORnull. Seed for random sequence generation. Defaults to None.
+#' @slot seed numeric. Seed for random sequence generation. Defaults to None.
 #' @slot verbose logical. Whether to display executions output or not. Defaults to False.
-#' @slot init character. The parameter initialization method. Defaults to svd.
+#' @slot init character. The parameter initialization method. Defaults to 'svd'.
 #' @slot n_max_iter numeric. Maximum number of iterations. Defaults to 10.
-#' @slot n_loops numeric. Number of random initializations to gurantee global results. Defaults to 10.
+#' @slot n_loops numeric. Number of initialization to guarantee global results. Defaults to 10.
 #' @slot tol numeric. Tolerance level/acceptable error. Defaults to 1e-5.
-#' @slot U_i_g numericORnull. (I,G) initial stochastic membership function matrix.
-#' @slot B_j_q numericORnull. (J,Q) initial component weight matrix for variables.
-#' @slot C_k_r numericORnull. (K,R) initial component weight matrix for occasions.
+#' @slot U_i_g numeric. (I,G) initial stochastic membership function matrix.
+#' @slot B_j_q numeric. (J,Q) initial component weight matrix for variables.
+#' @slot C_k_r numeric. (K,R) initial component weight matrix for occasions.
 #'
 #' @importFrom methods setClass
 #'
@@ -154,7 +154,6 @@ setClass("simultaneous",
 #' @importFrom Rdpack reprompt
 #'
 #' @references
-#' \insertRef{t3Clus}{simuclustfactor}
 #' \insertRef{tucker1966}{simuclustfactor}
 #' \insertRef{VichiRocciKiers}{simuclustfactor}
 #'
@@ -197,8 +196,8 @@ setClass('ct3clus', contains='simultaneous')
 #' @importFrom Rdpack reprompt
 #'
 #' @references
-#' \insertRef{t3Clus}{simuclustfactor}
 #' \insertRef{tucker1966}{simuclustfactor}
+#' \insertRef{t3clus}{simuclustfactor}
 #' \insertRef{VichiRocciKiers}{simuclustfactor}
 #'
 #' @examples
@@ -225,6 +224,7 @@ setGeneric('fit.t3clus', function(model, X_i_jk, full_tensor_shape, reduced_tens
 #'
 #' @references
 #' \insertRef{tucker1966}{simuclustfactor}
+#' \insertRef{3FKMeans}{simuclustfactor}
 #' \insertRef{VichiRocciKiers}{simuclustfactor}
 #'
 #' @name fit.3fkmeans
@@ -257,8 +257,9 @@ setGeneric('fit.3fkmeans', function(model, X_i_jk, full_tensor_shape, reduced_te
 #' @importFrom Rdpack reprompt
 #'
 #' @references
-#' \insertRef{t3Clus}{simuclustfactor}
 #' \insertRef{tucker1966}{simuclustfactor}
+#' \insertRef{t3clus}{simuclustfactor}
+#' \insertRef{3FKMeans}{simuclustfactor}
 #' \insertRef{VichiRocciKiers}{simuclustfactor}
 #'
 #' @examples

@@ -17,7 +17,7 @@
 #'
 #' @returns Z_i_jk: Component scores in the full space.
 #' @returns E_i_jk: Generated noise at the given noise level.
-#' @returns X_i_jk: Dataset with noise level set to stdev specified.
+#' @returns X_i_jk: Dataset with noise level set to noise_stdev specified.
 #' @returns Y_g_qr: Centroids matrix in the reduced space.
 #' @returns U_i_g: Stochastic membership function matrix.
 #' @returns B_j_q: Objects component scores matrix.

@@ -104,10 +104,11 @@ generate_rmfm <- function(I,G, seed=NULL){
 }
 
 
-#' Onerun of the K-means clustering technique
+#' One-run of the K-means clustering technique
 #'
-#' Initializes centroids based on input centroid or randomly. iterate once over
-#' input data to update the centroids assigning objects to the closest centroids.
+#' Initializes centroids based on a given membership function matrix or randomly.
+#' Iterate once over the input data to update the membership function matrix
+#' assigning objects to the closest centroids.
 #'
 #' @param Y_i_qr Input data to group/cluster.
 #' @param G Number of clusters to find.
@@ -173,7 +174,7 @@ onekmeans <- function(Y_i_qr, G, U_i_g=NULL, seed=NULL){
 #' Split Member of Largest cluster with An Empty cluster.
 #'
 #' If there is an empty cluster share members of largest cluster with
-#' empty cluster via kmeans implementation.
+#' empty cluster via the k-means clustering technique
 #'
 #' @param LC Largest cluster index.
 #' @param EC Empty cluster index to share members of LC with.
@@ -198,13 +199,13 @@ split_update = function(LC, LC_members, LC_scores, EC, U_i_g, C_g, seed){
 
   }else{
 
-    # perform kmeans on LC members
+    # perform k-means on LC members
     U_m_2 = generate_rmfm(I=M, G=2, seed = seed)  # initialize matrix with 2 groups
     Y_2_qr = diag(1/colSums(U_m_2)) %*% t(U_m_2) %*% LC_scores  # 2xQR centroids matrix for subclusters
 
     # assign each cluster member to the respective sub-cluster
     for (i in 1:dim(LC_scores)[1]){
-      #dist = rowSums((LC_scores[i,]-Y_2_qr)**2)  # calculate distance between obj and the 2 sub-centroids.
+      # dist = rowSums((LC_scores[i,]-Y_2_qr)**2)  # calculate distance between obj and the 2 sub-centroids.
       dist = rowSums(sweep(Y_2_qr,2,LC_scores[i,])^2)
       min_dist_cluster = which.min(dist)  # get cluster with smallest distance from object.
 
