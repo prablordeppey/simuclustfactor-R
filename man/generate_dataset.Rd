@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_dataset.R
 \name{generate_dataset}
 \alias{generate_dataset}
-\title{Dataset Generation for simulation}
+\title{Three-Mode Dataset Generator for Simulations}
 \usage{
 generate_dataset(
   I = 8,
@@ -11,47 +11,53 @@ generate_dataset(
   G = 3,
   Q = 3,
   R = 2,
-  mean = 0,
-  stdev = 0.5,
-  random_state = NULL
+  centroids_spread = c(0, 1),
+  noise_mean = 0,
+  noise_stdev = 0.5,
+  seed = NULL
 )
 }
 \arguments{
-\item{I}{number of objects.}
+\item{I}{Number of objects.}
 
-\item{J}{number of variables per occasion}
+\item{J}{Number of variables per occasion.}
 
-\item{K}{number of occasions}
+\item{K}{Number of occasions.}
 
-\item{G}{number of clusters}
+\item{G}{Number of clusters.}
 
-\item{Q}{number of factors for the variables}
+\item{Q}{Number of factors for the variables.}
 
-\item{R}{number of factors for the occasions}
+\item{R}{Number of factors for the occasions.}
 
-\item{mean}{noise effect mean}
+\item{centroids_spread}{interval from which to uniformly pick the centroids.}
 
-\item{stdev}{noise effect level/spread/standard deviation}
+\item{noise_mean}{Mean of noise to generate.}
 
-\item{random_state}{seed for random number generation}
+\item{noise_stdev}{Noise effect level/spread/standard deviation.}
+
+\item{seed}{Seed for random sequence generation.}
 }
 \value{
-Z_i_jk: component scores in the full space
+Z_i_jk: Component scores in the full space.
 
-X_i_jk: dataset with noise level set to stdev specified
+E_i_jk: Generated noise at the given noise level.
 
-Y_g_qr: centroids matrix in the reduced space
+X_i_jk: Dataset with noise level set to stdev specified.
 
-U_i_g: stochastic membership function matrix
+Y_g_qr: Centroids matrix in the reduced space.
 
-B_j_q: objects component scores matrix
+U_i_g: Stochastic membership function matrix.
 
-C_k_r: occasions component scores matrix
+B_j_q: Objects component scores matrix.
+
+C_k_r: Occasions component scores matrix.
 }
 \description{
 Generate G clustered synthetic dataset of I objects measured on J variables
 for K occasions with additive noise.
 }
 \examples{
->> X_i_jk = generate_dataset(random_state=0)
+generate_dataset(seed=0)
+
 }

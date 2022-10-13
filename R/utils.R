@@ -1,20 +1,23 @@
-### ========  START OF PseudoF
 
-#' PseudoF sore in reduced space
+#' PseudoF Score in the Reduced-Space
 #'
-#' computes the PseudoF score in the reduced space.
+#' Computes the PseudoF score in the reduced space.
 #'
-#' @param bss between sums of squared deviations between clusters
-#' @param wss within sums of squared deviations within clusters
-#' @param full_tensor_shape dimensions of the tensor in the original space
-#' @param reduced_tensor_shape dimension of the tensor in the reduced space.
+#' @param bss Between sums of squared deviations between clusters.
+#' @param wss Within sums of squared deviations within clusters.
+#' @param full_tensor_shape Dimensions of the tensor in the original space.
+#' @param reduced_tensor_shape Dimension of the tensor in the reduced space.
 #'
 #' @return PseudoF score
 #' @export
 #'
+#' @references
+#' \insertRef{pseudoF}{simuclustfactor}
+#'
 #' @examples
-#' PseudoF_reduced(12,6,c(8,5,4),c(3,3,2))
-PseudoF_Reduced = function(bss, wss, full_tensor_shape, reduced_tensor_shape){
+#' pseudof.reduced(12,6,c(8,5,4),c(3,3,2))
+#'
+pseudof.reduced = function(bss, wss, full_tensor_shape, reduced_tensor_shape){
 
   # dimensions of tensor in the full space
   I = full_tensor_shape[1] # objects
@@ -30,21 +33,26 @@ PseudoF_Reduced = function(bss, wss, full_tensor_shape, reduced_tensor_shape){
   return (bss/db)/(wss/dw)
 }
 
-#' PseudoF sore in Full space
+
+#' PseudoF Score in the Full-Space
 #'
-#' computes the PseudoF score in the full space.
+#' Computes the PseudoF score in the full space.
 #'
-#' @param bss between sums of squared deviations between clusters
-#' @param wss within sums of squared deviations within clusters
-#' @param full_tensor_shape dimensions of the tensor in the original space
-#' @param reduced_tensor_shape dimension of the tensor in the reduced space.
+#' @param bss Between sums of squared deviations between clusters.
+#' @param wss Within sums of squared deviations within clusters.
+#' @param full_tensor_shape Dimensions of the tensor in the original space.
+#' @param reduced_tensor_shape Dimension of the tensor in the reduced space.
 #'
 #' @return PseudoF score
 #' @export
 #'
+#' @references
+#' \insertRef{pseudoF}{simuclustfactor}
+#' \insertRef{t3clus}{simuclustfactor}
+#'
 #' @examples
-#' PseudoF_full(12,6,c(8,5,4),c(3,3,2))
-PseudoF_Full = function(bss, wss, full_tensor_shape, reduced_tensor_shape){
+#' pseudof.full(12,6,c(8,5,4),c(3,3,2))
+pseudof.full = function(bss, wss, full_tensor_shape, reduced_tensor_shape){
 
   I = full_tensor_shape[1] # number of objects
   J = full_tensor_shape[2] # number of variables
@@ -56,57 +64,29 @@ PseudoF_Full = function(bss, wss, full_tensor_shape, reduced_tensor_shape){
   R = reduced_tensor_shape[3] # number of factors for occasions
 
   db = (G-1)*Q*R + (J-Q)*Q + (K-R)*R
-  dw = I*J*K - G*Q*R + (J-Q)*Q + (K-R)*R
+  dw = I*J*K - (G*Q*R + (J-Q)*Q + (K-R)*R)
 
   return (bss/db)/(wss/dw)
 }
 
-### ========  END OF PseudoF
 
-
-### ========  START OF EigenVectors
-
-#' Eigenvectors Extraction
+#' Random Membership Function Matrix Generator
 #'
-#' Returns the first D real eigenvectors of a given covariance matrix
+#' Generates random binary stochastic membership function matrix for the I objects.
 #'
-#' @param X covariance matrix to exttrat first D unitlength eigenvectors
-#' @param D number of orthonormal eigenvectors to return
+#' @param I Number of objects.
+#' @param G Number of groups/clusters.
+#' @param seed Seed for random number generation.
 #'
-#' @return first D eigenvectors of the covariance matrix
+#' @return U_i_g, binary stochastic membership matrix.
 #' @export
 #'
 #' @examples
-#' >> X_i_jk = generate_dataset(random_state=0)$X_i_jk
-#' >> norm(EigenVectors(X_i_jk %*% t(X_i_jk),3),'F')  # 1.732051
-EigenVectors <- function(X, D){
-  return(eigen(X, symmetric = T)$vectors[,1:D])
-}
-
-### ========  END OF SingularVectors
-
-
-### ========  START OF MEMBERSHIP FUNCTION MATRIX
-
-#' Random Membership Matrix Generator
+#' generate_rmfm(I=8,G=3)
 #'
-#' Generates binary stochastic membership function matrix for the I objects.
-#'
-#' @param I number of objects.
-#' @param G number of groups/clusters.
-#' @param seed random_state seed.
-#'
-#' @return U_i_g, binary stochastic membership matrix
-#' @export
-#'
-#' @examples
-#' >> RandomMembershipMatrix(I=8,G=3)
-RandomMembershipMatrix <- function(I,G, seed=NULL){
+generate_rmfm <- function(I,G, seed=NULL){
 
-  #set.seed(seed)
-  if (!is.null(seed)){
-    if (is.null(.Random.seed)){ set.seed(seed) }
-  }
+  set.seed(seed)
 
   # initialize U_i_g
   U_i_g = matrix(0,nrow = I, ncol = G)
@@ -123,86 +103,47 @@ RandomMembershipMatrix <- function(I,G, seed=NULL){
   return(U_i_g)
 }
 
-### ========  END OF MEMBERSHIP FUNCTION MATRIX
 
-
-### ========  START OF OneKMeans
-
-#' One-run of the K-means clustering technique
+#' Onerun of the K-means clustering technique
 #'
-#' initializes centroids based on input centroid or randomly. iterate once over
+#' Initializes centroids based on input centroid or randomly. iterate once over
 #' input data to update the centroids assigning objects to the closest centroids.
 #'
-#' @param Y_i_qr # input data to group/cluster.
-#' @param G # number of clusters to find.
-#' @param U_i_g # initial membership matrix for the I objects
-#' @param seed # random_state for random values generation.
+#' @param Y_i_qr Input data to group/cluster.
+#' @param G Number of clusters to find.
+#' @param U_i_g Initial membership matrix for the I objects.
+#' @param seed Seed for random values generation.
 #'
-#' @return updated membership matrix U_i_g
+#' @return updated membership matrix U_i_g.
 #' @export
 #'
+#' @references
+#'  \insertRef{k_meansMethods}{simuclustfactor}
+#'
 #' @examples
-#' >> X_i_jk = generate_dataset(random_state=0)$X_i_jk
-#' >> OneKMeans(X_i_jk, G=5)
-OneKMeans <- function(Y_i_qr, G, U_i_g=NULL, seed=NULL){
+#' X_i_jk = generate_dataset(seed=0)$X_i_jk
+#' onekmeans(X_i_jk, G=5)
+#'
+onekmeans <- function(Y_i_qr, G, U_i_g=NULL, seed=NULL){
 
-  # defining random generator with no seed to radnom results.
-  if (!is.null(seed)){
-    if (is.null(.Random.seed)){ set.seed(seed) }
-  }
+  # defining random generator with no seed to random results.
+  set.seed(seed)
 
   I = nrow(Y_i_qr)
 
   # initialize centroids matrix
   if (is.null(U_i_g)){
-    U_i_g = RandomMembershipMatrix(I,G)
+    U_i_g = generate_rmfm(I, G, seed=seed)
   }
 
   Y_g_qr = diag(1/colSums(U_i_g)) %*% t(U_i_g) %*% Y_i_qr
 
   U_i_g = matrix(0, nrow = I, ncol=G)
 
-  #' Split largest cluster with chosen empty cluster.
-  #'
-  #' if there is an empty cluster share members of largest cluster with
-  #' empty cluster.
-  #'
-  #' @param LC largest cluster index
-  #' @param EC empty cluster index to share members of LC with
-  #' @param U_i_g current membership function matrix with empty cluster
-  #'
-  #' @return U_i_g, the updated membership matrix.
-  split_update = function(LC, EC, U_i_g){
-
-    cluster_members_indices = which(U_i_g[,LC]==1)  # objects in the largest cluster
-    M = length(cluster_members_indices)  # number of objects in the largest cluster.
-
-    # U_m_2 = RandomMembershipMatrix(I=M, G=2)  # initialize matrix with 2 groups
-    # Y_2_qr = diag(1/colSums(U_m_2)) %*% t(U_m_2) %*% Y_i_qr[cluster_members_indices,]  # 2xQR centroids matrix for subclusters
-    #
-    # # assign each cluster member to the respective sub-cluster
-    # for (i in 1:cluster_members_indices){
-    #   dist = rowSums((Y_i_qr[i,]-Y_2_qr)**2)  # calculate distance between obj and the 2 sub-centroids.
-    #   min_dist_cluster = which.min(dist)  # get cluster with smallest distance from object.
-    #
-    #   # obj reassignment
-    #   if (min_dist_cluster == 1){
-    #     U_i_g[i, LC] = 0  # unassign the obj from the large cluster.
-    #     U_i_g[i, EC] = 1  # assign the obj to the empty cluster.
-    #   }
-    # }
-
-    # split members into 2 groups and assign to clusters
-    for (i in 1:floor(M/2)){
-      U_i_g[cluster_members_indices[i], LC] = 0  # unassign the obj from the large cluster.
-      U_i_g[cluster_members_indices[i], EC] = 1  # assign the obj to the empty cluster.
-    }
-    return(U_i_g)
-  }
-
   # assign each object to the respective cluster
   for (i in 1:I){
-    dist = rowSums((Y_i_qr[i,]-Y_g_qr)**2)  # calculate distance between obj and centroids.
+    #dist = rowSums((Y_i_qr[i,]-Y_g_qr)**2)  # calculate distance between obj and centroids.
+    dist = rowSums(sweep(Y_g_qr,2,Y_i_qr[i,])^2)
     min_dist_cluster = which.min(dist)  # get cluster with smallest distancee from object.
     U_i_g[i, min_dist_cluster] = 1  # assign the object to that cluster.
   }
@@ -212,16 +153,67 @@ OneKMeans <- function(Y_i_qr, G, U_i_g=NULL, seed=NULL){
 
   # ------- case 1: repeat until no empty clustering
   while (0 %in% C_g){
+
     LC = which.max(C_g)    # select the largest cluster
     EC = which(C_g==0)  # select next empty cluster
-    U_i_g = split_update(LC,EC,U_i_g)  # splitting cluster into 2 sub-clusters and updating U_i_g
-    C_g = colSums(U_i_g)  # ensure the alg stops
+
+    LC_members = which(U_i_g[,LC]==1)  # objects in the largest cluster indices
+    M = length(LC_members)  # number of objects in the largest cluster.
+    LC_scores = Y_i_qr[LC_members,]  # get scores in the largest cluster
+
+    U_i_g = split_update(LC, LC_members, LC_scores, EC, U_i_g, C_g, seed)  # splitting cluster into 2 sub-clusters and updating U_i_g
+
+    C_g = colSums(U_i_g)  # to check empty clusters
   }
 
   return(U_i_g)
 }
 
-### ========  END OF OneKMeans
 
+#' Split Member of Largest cluster with An Empty cluster.
+#'
+#' If there is an empty cluster share members of largest cluster with
+#' empty cluster via kmeans implementation.
+#'
+#' @param LC Largest cluster index.
+#' @param EC Empty cluster index to share members of LC with.
+#' @param U_i_g Current membership function matrix with empty cluster to update.
+#' @param LC_members Members of largest cluster.
+#' @param LC_scores Scores of largest cluster.
+#' @param C_g Number of members in each cluster.
+#' @param seed Seed for random number generation.
+#'
+#'
+#' @keywords internal
+#'
+#' @return U_i_g, the updated membership matrix.
+split_update = function(LC, LC_members, LC_scores, EC, U_i_g, C_g, seed){
 
+  M = length(LC_members)  # number of objects in the largest cluster.
 
+  if (M==2){
+
+    U_i_g[LC_members[1],] = 0
+    U_i_g[LC_members[1],EC] = 0
+
+  }else{
+
+    # perform kmeans on LC members
+    U_m_2 = generate_rmfm(I=M, G=2, seed = seed)  # initialize matrix with 2 groups
+    Y_2_qr = diag(1/colSums(U_m_2)) %*% t(U_m_2) %*% LC_scores  # 2xQR centroids matrix for subclusters
+
+    # assign each cluster member to the respective sub-cluster
+    for (i in 1:dim(LC_scores)[1]){
+      #dist = rowSums((LC_scores[i,]-Y_2_qr)**2)  # calculate distance between obj and the 2 sub-centroids.
+      dist = rowSums(sweep(Y_2_qr,2,LC_scores[i,])^2)
+      min_dist_cluster = which.min(dist)  # get cluster with smallest distance from object.
+
+      if (min_dist_cluster == 1){
+        U_i_g[LC_members[i],] = 0  # unassign the obj from the large cluster.
+        U_i_g[LC_members[i], EC] = 1  # assign the obj to the empty cluster.
+      }
+    }
+  }
+
+  return(U_i_g)
+}

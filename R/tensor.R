@@ -1,20 +1,19 @@
-#' Folding matrix back to tensor by mode.
+#' Folding Matrix to Tensor by Mode.
 #'
 #' X_i_jk => X_i_j_k, X_j_ki => X_i_j_k, X_k_ij => X_i_j_k
 #'
-#' @param X data matrix to fold
-#' @param mode mode of operation
-#' @param shape dimension of original tensor
+#' @param X Data matrix to fold.
+#' @param mode Mode of operation.
+#' @param shape Dimension of original tensor.
 #'
-#' @return tensor
+#' @return X_i_j_k Three-mode tensor.
 #' @export
 #'
 #' @examples
-#' >> X_i_jk = generate_dataset()$X_i_jk
-#' >> Fold(X_i_jk, mode=1, shape=c(I=8,J=5,K=4)) # X_i_j_k
-#' >> Fold(X_j_ki, mode=2, shape=c(I=8,J=5,K=4)) # X_i_j_k
-#' >> Fold(X_k_ij, mode=3, shape=c(I=8,J=5,K=4)) # X_i_j_k
-Fold = function(X, mode, shape){
+#' X_i_jk = generate_dataset()$X_i_jk
+#' X_i_j_k = fold(X_i_jk, mode=1, shape=c(I=8,J=5,K=4)) # X_i_j_k
+#'
+fold = function(X, mode, shape){
 
   I = shape[1]
   J = shape[2]
@@ -49,23 +48,22 @@ Fold = function(X, mode, shape){
   return(folded)
 }
 
-#' Tensor matricization
+#' Tensor Matricization
 #'
-#' Unfold/matricize tensor. convert matrix to tensor by mode.
+#' Unfold/Matricize tensor. convert matrix to tensor by mode.
 #'
-#' @param tensor three-mode tensor array
-#' @param mode mode of operation
+#' @param tensor Three-mode tensor array.
+#' @param mode Mode of operation.
 #'
-#' @return matrix
+#' @return Matrix
 #' @export
 #'
 #' @examples
-#' >> X_i_jk = generate_dataset()$X_i_jk
-#' >> X_i_j_k = Fold(X_i_jk, mode=1, shape=c(I=8,J=5,K=4))
-#' >> Unfold(X=X_i_j_k, mode=1) # X_i_jk
-#' >> Unfold(X=X_i_j_k, mode=2) # X_j_ki
-#' >> Unfold(X=X_i_j_k, mode=3) # X_k_ij
-Unfold = function(tensor, mode){
+#' X_i_jk = generate_dataset()$X_i_jk
+#' X_i_j_k = fold(X_i_jk, mode=1, shape=c(I=8,J=5,K=4))
+#' unfold(X_i_j_k, mode=1) # X_i_jk
+#'
+unfold = function(tensor, mode){
 
   I = dim(tensor)[1]
   J = dim(tensor)[2]

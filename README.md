@@ -17,7 +17,7 @@ The goal of simuclustfactor is to perform:
 ## Installation
 
 You can install the development version of simuclustfactor from
-[GitHub](https://github.com/) with:
+[GitHub](https://github.com/prablordeppey/simuclustfactor-r) with:
 
 ``` r
 # install.packages("devtools")
@@ -31,31 +31,31 @@ Synthetic Dataset Generation (Additive noise)
 ``` r
 library(simuclustfactor)
 
-# dimensions of the tensor in full and reduced spaces
-I=8; J=5; K=4 # number objects, variables and occasions respectively
-G=3; Q=3; R=2 # number clusters, variable-factors and occasion-factors respectively
-data = generate_dataset(I, J, K, G, Q, R, mean=0, stdev=0.5, random_state=0)
+# Defining tensor dimensions in full and reduced spaces.
+I=8; J=5; K=4 # number of objects, variables and occasions respectively.
+G=3; Q=3; R=2 # number of clusters, factors for variable and factors for occasion respectively.
+data = generate_dataset(I, J, K, G, Q, R, mean=0, stdev=0.5, random_state=0)  # generate synthetic dataset with noise level 0.5. 
 
-# get data attributes
-Y_g_qr = data$Y_g_qr  # centroids matrix in the reduced space
-Z_i_jk = data$Z_i_jk  # score/centroid matrix in the fullspace.
-X_i_jk = data$X_i_jk  # dataset with noise
+# Extracting the data
+Y_g_qr = data$Y_g_qr  # centroids matrix in the reduced space.
+Z_i_jk = data$Z_i_jk  # score/centroid matrix in the full-space.
+X_i_jk = data$X_i_jk  # dataset with noise.
 
-# ground-truth associations
+# Ground-truth associations
 U_i_g = data$U_i_g  # binary stochastic membership matrix
 B_j_q = data$B_j_q  # variables factor matrix
 C_k_r = data$C_k_r  # occasions factor matrix
 
-# folding generated data matrices into tensors
-X_i_j_k = Fold(X_i_jk, mode=1, shape=c(I,J,K))
-Z_i_j_k = Fold(Z_i_jk, mode=1, shape=c(I,J,K))
-Y_g_q_r = Fold(Y_g_qr, mode=1, shape=c(G,Q,R))
+# Folding generated data matrices into tensors
+X_i_j_k = fold(X_i_jk, mode=1, shape=c(I,J,K))
+Z_i_j_k = fold(Z_i_jk, mode=1, shape=c(I,J,K))
+Y_g_q_r = fold(Y_g_qr, mode=1, shape=c(G,Q,R))
 ```
 
 ### Tandem Models
 
 ``` r
-# initialize the model
+# Initialize the tandem model
 tandem_model = tandem(random_state=NULL, verbose=TRUE, init='svd', n_max_iter=10, n_loops=10, tol=1e-5, U_i_g=NULL, B_j_q=NULL, C_k_r=NULL)
 ```
 
@@ -63,15 +63,6 @@ tandem_model = tandem(random_state=NULL, verbose=TRUE, init='svd', n_max_iter=10
 
 ``` r
 twcfta = fit.twcfta(tandem_model, X_i_jk, full_tensor_shape=c(I,J,K), reduced_tensor_shape=c(G,Q,R))
-
-# get values/attributes from the implementation with the '@' operator
-U_i_g0 = twcfta@U_i_g0  # initial membership matrix
-B_j_q0 = twcfta@B_j_q0  # initial variable-component matrix
-C_k_r0 = twcfta@C_k_r0  # initial occasion-component matrix
-U_i_g = twcfta@U_i_g  # final membership matrix
-B_j_q = twcfta@B_j_q  # final variable-component matrix
-C_k_r = twcfta@C_k_r  # final occasion-component matrix
-...
 ```
 
 **TWFCTA**
@@ -79,20 +70,48 @@ C_k_r = twcfta@C_k_r  # final occasion-component matrix
 ``` r
 twfcta = fit.twfcta(tandem_model, X_i_jk, full_tensor_shape=c(I,J,K), reduced_tensor_shape=c(G,Q,R))
 
-# get values/attributes from the implementation with the '@' operator
-U_i_g0 = twfcta@U_i_g0  # initial membership matrix
-B_j_q0 = twfcta@B_j_q0  # initial variable-component matrix
-C_k_r0 = twfcta@C_k_r0  # initial occasion-component matrix
-U_i_g = twfcta@U_i_g  # final membership matrix
-B_j_q = twfcta@B_j_q  # final variable-component matrix
-C_k_r = twfcta@C_k_r  # final occasion-component matrix
-...
+# The following attributes are accessible for the tandem models via the '@' operator
+twfcta@U_i_g0  # initial membership matrix
+twfcta@B_j_q0  # initial variable-component matrix
+twfcta@C_k_r0  # initial occasion-component matrix
+twfcta@U_i_g  # final membership matrix
+twfcta@B_j_q  # final variable-component matrix
+twfcta@C_k_r  # final occasion-component matrix
+
+twfcta@Y_g_qr  # The centroids in the reduced space (data matrix).
+twfcta@X_i_jk_scaled  # Standardized data matrix.
+
+twfcta@BestTimeElapsed  # Execution time for the best iterate.
+twfcta@BestLoop  # Loop that obtained the best iterate.
+
+twfcta@BestKmIteration  # Number of iterations until best iterate for the K-means.
+twfcta@BestFaIteration  # Number of iterations until best iterate for the FA.
+twfcta@FaConverged  # Flag to check if algorithm converged for the Factor decomposition.
+twfcta@KmConverged  # Flag to check if algorithm converged for the K-means.
+twfcta@nKmConverges  # Number of loops that converged for the K-means.
+twfcta@nFaConverges  # Number of loops that converged for the Factor decomposition.
+
+twfcta@TSS_full  # Total deviance in the full-space.
+twfcta@BSS_full  # Between deviance in the reduced-space.
+twfcta@RSS_full  # Residual deviance in the reduced-space.
+twfcta@TSS_reduced  # Total deviance in the reduced-space.
+twfcta@BSS_reduced  # Between deviance in the reduced-space.
+twfcta@RSS_reduced  # Residual deviance in the reduced-space.
+
+twfcta@PF_full  # PseudoF computed in the full-space.
+twfcta@PF_reduced  # PseudoF computed in the reduced-space.
+twfcta@PF  # Actual PseudoF score used to obtain the best loop. PF_reduced for twfcta and PF_full twcfta.
+
+twfcta@Labels  # Object cluster assignments.
+twfcta@FsKM  # Objective function values for the KM best iterate.
+twfcta@FsFA  # Objective function values for the FA best iterate.
+twfcta@Enorm  # Average l2norm of residual norm.
 ```
 
 ### Simultaneous Models
 
 ``` r
-# initialize the model
+# Initialize the model
 simultaneous_model = simultaneous(random_state=NULL, verbose=TRUE, init='svd', n_max_iter=10, n_loops=10, tol=1e-5, U_i_g=NULL, B_j_q=NULL, C_k_r=NULL)
 ```
 
@@ -100,12 +119,45 @@ simultaneous_model = simultaneous(random_state=NULL, verbose=TRUE, init='svd', n
 
 ``` r
 t3clus = fit.t3clus(simultaneous_model, X_i_jk, full_tensor_shape=c(I,J,K), reduced_tensor_shape=c(G,Q,R))
-tfkmeans = fit.3fkmeans(simul_model, X_i_jk, full_tensor_shape=c(I,J,K), reduced_tensor_shape=c(G,Q,R))
+tfkmeans = fit.3fkmeans(simultaneous_model, X_i_jk, full_tensor_shape=c(I,J,K), reduced_tensor_shape=c(G,Q,R))
 ```
 
 **CT3Clus**
 
 ``` r
+t3clus = fit.ct3clus(simultaneous_model, X_i_jk, full_tensor_shape=c(I,J,K), reduced_tensor_shape=c(G,Q,R), alpha=1)
 ct3clus = fit.ct3clus(simultaneous_model, X_i_jk, full_tensor_shape=c(I,J,K), reduced_tensor_shape=c(G,Q,R), alpha=0.5)
-tfkmeans = fit.3fkmeans(simul_model, X_i_jk, full_tensor_shape=c(I,J,K), reduced_tensor_shape=c(G,Q,R))
+tfkmeans = fit.ct3clus(simultaneous_model, X_i_jk, full_tensor_shape=c(I,J,K), reduced_tensor_shape=c(G,Q,R), alpha=0)
+
+# The following attributes are accessible for the simultaneous models via the '@' operator
+ct3clus@U_i_g0  # initial membership matrix.
+ct3clus@B_j_q0  # initial variable-component matrix.
+ct3clus@C_k_r0  # initial occasion-component matrix.
+ct3clus@U_i_g  # final membership matrix.
+ct3clus@B_j_q  # final variable-component matrix.
+ct3clus@C_k_r  # final occasion-component matrix.
+
+ct3clus@Y_g_qr  # Centroids in the reduced space (data matrix).
+ct3clus@X_i_jk_scaled  # Standardized data matrix.
+
+ct3clus@BestTimeElapsed  # Execution time for the best iterate.
+ct3clus@BestLoop  # Loop that obtained the best iterate.
+ct3clus@BestIteration  # Number of iterations until best iterate found.
+ct3clus@Converged  # Flag to check if the algorithm converged.
+ct3clus@nConverges  # Number of loops that converged.
+
+ct3clus@TSS_full  # Total deviance in the full-space.
+ct3clus@BSS_full  # Between deviance in the reduced-space.
+ct3clus@RSS_full  # Residual deviance in the reduced-space.
+ct3clus@TSS_reduced  # Total deviance in the reduced-space.
+ct3clus@BSS_reduced  # Between deviance in the reduced-space.
+ct3clus@RSS_reduced  # Residual deviance in the reduced-space.
+
+ct3clus@PF_full  # PseudoF computed in the full-space.
+ct3clus@PF_reduced  # PseudoF computed in the reduced-space.
+ct3clus@PF  # Weighted PseudoF score used to obtain the best loop.
+
+ct3clus@Labels  # Object cluster assignments.
+ct3clus@Fs  # Objective function values for the best iterate.
+ct3clus@Enorm  # Average l2norm of residual norm.
 ```

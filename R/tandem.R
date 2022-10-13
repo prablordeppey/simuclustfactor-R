@@ -7,42 +7,77 @@ setClassUnion("integerORnull", c("integer", "NULL"))
 
 ### RESULT OUTPUT
 
-setClass("result.tandem",
+#' Tandem results attributes
+#'
+#' @slot U_i_g0 matrix. Initial object membership function matrix.
+#' @slot B_j_q0 matrix. Initial factor/component matrix for the variables.
+#' @slot C_k_r0 matrix. Initial factor/component matrix for the occasions.
+#' @slot U_i_g matrix. Final/updated object membership function matrix.
+#' @slot B_j_q matrix. Final/updated factor/component matrix for the variables.
+#' @slot C_k_r matrix. Final/updated factor/component matrix for the occasions.
+#' @slot Y_g_qr matrix. Derived centroids in the reduced space (data matrix).
+#' @slot X_i_jk_scaled matrix. Standardized dataset matrix.
+#' @slot BestTimeElapsed numeric. Execution time for the best iterate.
+#' @slot BestLoop numeric. Loop that obtained the best iterate.
+#' @slot BestKmIteration numeric. Number of iteration until best iterate for the K-means.
+#' @slot BestFaIteration numeric. Number of iteration until best iterate for the FA.
+#' @slot FaConverged numeric. Flag to check if algorithm converged for the K-means.
+#' @slot KmConverged numeric. Flag to check if algorithm converged for the Factor Decomposition.
+#' @slot nKmConverges numeric. Number of loops that converged for the K-means.
+#' @slot nFaConverges numeric. Number of loops that converged for the Factor decomposition.
+#' @slot TSS_full numeric. Total deviance in the fullspace.
+#' @slot BSS_full numeric. Between deviance in the reduced-space.
+#' @slot RSS_full numeric. Residual deviance in the reduced-space.
+#' @slot PF_full numeric. PseudoF in the full-space.
+#' @slot TSS_reduced numeric. Total deviance in the reduced-space.
+#' @slot BSS_reduced numeric. Between deviance in the reduced-space.
+#' @slot RSS_reduced numeric. Residual deviance in the reduced-space.
+#' @slot PF_reduced numeric. PseudoF in the reducedspace.
+#' @slot PF numeric. Actual PseudoF value to obtain best loop.
+#' @slot Labels integer. Object cluster assignments.
+#' @slot FsKM numeric. Objective function values for the KM best iterate.
+#' @slot FsFA numeric. Objective function values for the FA best iterate.
+#' @slot Enorm numeric. Average l2 norm of the residual norm.
+#'
+#'
+#' @importFrom methods setClass
+#'
+setClass("attributes.tandem",
          slots = c(
-           U_i_g0="matrixORnull",            # initial object membership function matrix
-           B_j_q0="matrixORnull",            # initial factor/component matrix for the variables
-           C_k_r0="matrixORnull",            # initial factor/component matrix for the occasions
-           U_i_g="matrixORnull",             # final/updated object membership function matrix
-           B_j_q="matrixORnull",             # final/updated factor/component matrix for the variables
-           C_k_r="matrixORnull",             # final/updated factor/component matrix for the occasions
-           Y_g_qr="matrixORnull",            # derived centroids in the reduced space (data matrix)
-           X_i_jk_scaled="matrixORnull",     # standardized dataset matrix
+           U_i_g0="matrixORnull",
+           B_j_q0="matrixORnull",
+           C_k_r0="matrixORnull",
+           U_i_g="matrixORnull",
+           B_j_q="matrixORnull",
+           C_k_r="matrixORnull",
+           Y_g_qr="matrixORnull",
+           X_i_jk_scaled="matrixORnull",
 
-           BestTimeElapsed="numericORnull",  # execution time for the best iterate
-           BestLoop="numericORnull",         # loop that obtained the best iterate
-           BestKmIteration="numericORnull",  # number of iteration until best iterate for the K-means
-           BestFaIteration="numericORnull",  # number of iteration until best iterate for the FA.
-           FaConverged="logicalORnull",      # flag to check if algorithm converged for the K-means
-           KmConverged="logicalORnull",      # flag to check if algorithm converged for the Factor Decomposition
-           nKmConverges = "numericORnull",   # number of loops that converged for the K-means
-           nFaConverges = "numericORnull",   # number of loops that converged for the Factor decomposition
+           BestTimeElapsed="numericORnull",
+           BestLoop="numericORnull",
+           BestKmIteration="numericORnull",
+           BestFaIteration="numericORnull",
+           FaConverged="logicalORnull",
+           KmConverged="logicalORnull",
+           nKmConverges = "numericORnull",
+           nFaConverges = "numericORnull",
 
-           TSS_full='numericORnull',         # Total deviance in the fullspace
-           BSS_full='numericORnull',         # Between deviance in the reducedspace
-           RSS_full='numericORnull',         # Residual deviance in the reducedspace
-           PF_full='numericORnull',          # PseudoF in the fullspace
+           TSS_full='numericORnull',
+           BSS_full='numericORnull',
+           RSS_full='numericORnull',
+           PF_full='numericORnull',
 
-           TSS_reduced='numericORnull',     # Total deviance in the reducedspace
-           BSS_reduced='numericORnull',     # Between deviance in the reducedspace
-           RSS_reduced='numericORnull',     # Residual deviance in the reducedspace
-           PF_reduced='numericORnull',      # PseudoF in the reducedspace
+           TSS_reduced='numericORnull',
+           BSS_reduced='numericORnull',
+           RSS_reduced='numericORnull',
+           PF_reduced='numericORnull',
            PF='numericORnull',
 
-           Labels='integerORnull',          # object cluster assignments
+           Labels='integerORnull',
 
-           FsKM='numericORnull',            # objective function values for the KM best iterate
-           FsFA='numericORnull',            # objective function values for the FA best iterate
-           Enorm='numericORnull'            # average l2 norm of residual norm
+           FsKM='numericORnull',
+           FsFA='numericORnull',
+           Enorm='numericORnull'
          ),
          prototype = c(
            U_i_g0=NULL,
@@ -61,15 +96,16 @@ setClass("result.tandem",
            FaConverged=NULL,
            KmConverged=NULL,
 
-           TSSFull=NULL,
-           BSSFull=NULL,
-           RSSFull=NULL,
-           PFFull=NULL,
+           TSS_full=NULL,
+           BSS_full=NULL,
+           RSS_full=NULL,
+           PF_full=NULL,
 
-           TSSReduced=NULL,
-           BSSReduced=NULL,
-           RSSReduced=NULL,
-           PFReduced=NULL,
+           TSS_reduced=NULL,
+           BSS_reduced=NULL,
+           RSS_reduced=NULL,
+           PF_reduced=NULL,
+           PF=NULL,
 
            Labels=NULL,
 
@@ -82,17 +118,35 @@ setClass("result.tandem",
 
 setClassUnion("numericORnull", c("numeric", "NULL"))
 
+#' Tandem Class
+#'
+#' @slot verbose logical. Whether to display executions output or not. Defaults to False.
+#' @slot init character. The parameter initialization method. Defaults to svd.
+#' @slot n_max_iter numeric. Maximum number of iterations. Defaults to 10.
+#' @slot n_loops numeric. Number of random initializations to gurantee global results. Defaults to 10.
+#' @slot tol numeric. Tolerance level/acceptable error. Defaults to 1e-5.
+#' @slot U_i_g numericORnull. (I,G) initial stochastic membership function matrix.
+#' @slot B_j_q numericORnull. (J,Q) initial component weight matrix for variables.
+#' @slot C_k_r numericORnull. (K,R) initial component weight matrix for occasions.
+#' @slot seed Seed for random sequence generation. Defaults to None.
+#'
+#' @importFrom methods setClass
+#'
+#' @keywords internal
+#'
+#' @export
+#'
 setClass("tandem",
          slots=c(
-           random_state='numericORnull',   # seed for random sequence generation. Defaults to None.
-           verbose='logical',              # whether to display executions output or not. Defaults to False.
-           init='character',               # the parameter initialization method. Defaults to svd.
-           n_max_iter='numeric',           # maximum number of iterations. Defaults to 10.
-           n_loops='numeric',              # number of random initializations to gurantee global results. Defaults to 10.
-           tol='numeric',                  # tolerance level/acceptable error. Defaults to 1e-5.
-           U_i_g='numericORnull',          # (I,G) initial stochastic membership function matrix.
-           B_j_q='numericORnull',          # (J,Q) initial component weight matrix for variables.
-           C_k_r='numericORnull'           # (K,R) initial component weight matrix for occasions.
+           seed='numericORnull',
+           verbose='logical',
+           init='character',
+           n_max_iter='numeric',
+           n_loops='numeric',
+           tol='numeric',
+           U_i_g='numericORnull',
+           B_j_q='numericORnull',
+           C_k_r='numericORnull'
           )
 )
 
@@ -101,21 +155,27 @@ setClass("tandem",
 #'
 #' Initialization for the tandem models.
 #'
-#' @param random_state for random number generation
-#' @param verbose flag to display iteration outputs
-#' @param init parameter initialization method, 'svd' or 'random'
-#' @param n_max_iter maximum number of iteration to optimize the objective function
-#' @param n_loops maximum number of loops/runs for global results
-#' @param tol allowable tolerance to check convergence
-#' @param U_i_g initial membership function matrix for the objects
-#' @param B_j_q initial component scores matrix for the variables
-#' @param C_k_r initial component sores matrix for the occasions
+#' @param seed Seed for random sequence generation.
+#' @param verbose Flag to display iteration outputs for each loop.
+#' @param init Parameter initialization method, 'svd' or 'random'.
+#' @param n_max_iter Maximum number of iteration to optimize the objective function.
+#' @param n_loops Maximum number of loops/runs for global results.
+#' @param tol Allowable tolerance to check convergence.
+#' @param U_i_g Initial membership function matrix for the objects.
+#' @param B_j_q Initial component scores matrix for the variables.
+#' @param C_k_r Initial component sores matrix for the occasions.
 #'
 #' @export
 #'
-tandem <- function(random_state=NULL, verbose=TRUE, init='svd', n_max_iter=10, n_loops=10, tol=1e-5, U_i_g=NULL, B_j_q=NULL, C_k_r=NULL){
+#' @importFrom Rdpack reprompt
+#'
+#' @references
+#' \insertRef{tandemModels}{simuclustfactor}
+#' \insertRef{tucker1966}{simuclustfactor}
+#'
+tandem <- function(seed=NULL, verbose=TRUE, init='svd', n_max_iter=10, n_loops=10, tol=1e-5, U_i_g=NULL, B_j_q=NULL, C_k_r=NULL){
   new("tandem",
-      random_state=random_state,
+      seed=seed,
       verbose=verbose,
       init=init,
       n_max_iter=n_max_iter,
@@ -135,20 +195,26 @@ setClass('twfcta', contains='tandem')
 #' TWCFTA model
 #'
 #' Implements K-means clustering and afterwards factorial reduction
-#' in a sequential fashion
+#' in a sequential fashion.
 #'
-#' @param model initialized tandem model
-#' @param X_i_jk matricized tensor along mode-1 (I objects)
-#' @param full_tensor_shape dimensions of the tensor in full space
-#' @param reduced_tensor_shape dimensions of tensor in the reduced space
+#' @param model Initialized tandem model.
+#' @param X_i_jk Matricized tensor along mode-1 (I objects).
+#' @param full_tensor_shape Dimensions of the tensor in full space.
+#' @param reduced_tensor_shape Dimensions of tensor in the reduced space.
 #'
 #' @export
+#'
+#' @importFrom Rdpack reprompt
+#'
+#' @references
+#' \insertRef{tandemModels}{simuclustfactor}
+#' \insertRef{tucker1966}{simuclustfactor}
+#'
 #' @name fit.twcfta
-#' @docType methods
-#' @rdname tandem-twcfta
+#' @rdname fit.twcfta
 #'
 #' @examples
-#' X_i_jk = generate_dataset()
+#' X_i_jk = generate_dataset()$X_i_jk
 #' model = tandem()
 #' twcfta = fit.twcfta(model, X_i_jk, c(8,5,4), c(3,3,2))
 #'
@@ -160,20 +226,27 @@ setGeneric('fit.twcfta',
 #' TWFCTA model
 #'
 #' Implements factorial reduction and then K-means clustering
-#' in a sequential fashion
+#' in a sequential fashion.
 #'
-#' @param model initialized tandem model
-#' @param X_i_jk matricized tensor along mode-1 (I objects)
-#' @param full_tensor_shape dimensions of the tensor in full space
-#' @param reduced_tensor_shape dimensions of tensor in the reduced space
+#' @param model Initialized tandem model.
+#' @param X_i_jk Matricized tensor along mode-1 (I objects).
+#' @param full_tensor_shape Dimensions of the tensor in full space.
+#' @param reduced_tensor_shape Dimensions of tensor in the reduced space.
 #'
 #' @export
+#'
+#' @importFrom Rdpack reprompt
+#'
+#' @references
+#' \insertRef{tandemModels}{simuclustfactor}
+#' \insertRef{tucker1966}{simuclustfactor}
+#'
+#'
 #' @name fit.twfcta
-#' @docType methods
-#' @rdname tandem-twfcta
+#' @rdname fit.twfcta
 #'
 #' @examples
-#' X_i_jk = generate_dataset()
+#' X_i_jk = generate_dataset()$X_i_jk
 #' model = tandem()
 #' twfCta = fit.twfcta(model, X_i_jk, c(8,5,4), c(3,3,2))
 #'
@@ -185,16 +258,14 @@ setGeneric('fit.twfcta',
 
 # ------------ TWCFTA ------------
 
-#' TWCFTA model
-#'
-#' @aliases TWCFTA,twcfta-model
-#' @rdname tandem-methods
-#'
+#' @rdname fit.twcfta
 setMethod('fit.twcfta',
           signature=('tandem'),
           function(model, X_i_jk, full_tensor_shape, reduced_tensor_shape){
 
             # ------------ Initialization ------------
+
+            set.seed(model@seed)
 
             # I,J,K and G,Q,R declare
             I=full_tensor_shape[1]
@@ -233,7 +304,7 @@ setMethod('fit.twcfta',
 
               if (is.null(U_i_g0)){
 
-                U_i_g0 = RandomMembershipMatrix(I,G,seed=model@random_state)
+                U_i_g0 = generate_rmfm(I,G,seed=model@seed)
                 U_i_g_init = U_i_g0
 
                 # initial objective
@@ -253,7 +324,7 @@ setMethod('fit.twcfta',
                   km_iter = km_iter + 1
 
                   # get random centroids
-                  U_i_g = OneKMeans(X_i_jk, G, U_i_g=U_i_g0, seed=model@random_state)  # updated membership matrix
+                  U_i_g = onekmeans(X_i_jk, G, U_i_g=U_i_g0, seed=model@seed)  # updated membership matrix
                   X_g_jk = diag(1/colSums(U_i_g)) %*% t(U_i_g) %*% X_i_jk  # compute centroids matrix
 
                   # check if maximizes orbjective or minimizes the loss
@@ -274,14 +345,12 @@ setMethod('fit.twcfta',
                   }
 
                   if (km_iter == model@n_max_iter){
-                    if (isTRUE(model@verbose)){
-                      print("KM Maximum iterations reached.")
-                    }
+                    # if (isTRUE(model@verbose)){
+                    #   print("KM Maximum iterations reached.")
+                    # }
                     break
                   }
-
                   U_i_g0 = U_i_g
-
                 }
 
               }else{
@@ -299,9 +368,9 @@ setMethod('fit.twcfta',
               Fs_fa = c()  # objective function values
 
               # matricize centroid tensor
-              X_g_j_k = Fold(X_g_jk, mode=1, shape=c(G,J,K))
-              X_j_kg = Unfold(X_g_j_k, mode=2)
-              X_k_gj = Unfold(X_g_j_k, mode=3)
+              X_g_j_k = fold(X_g_jk, mode=1, shape=c(G,J,K))
+              X_j_kg = unfold(X_g_j_k, mode=2)
+              X_k_gj = unfold(X_g_j_k, mode=3)
 
               # as direct input
               B_j_q0 = model@B_j_q
@@ -309,17 +378,17 @@ setMethod('fit.twcfta',
 
               # initialize B and C
               if (model@init == 'svd'){
-                if (is.null(B_j_q0)){B_j_q0 = EigenVectors(X_j_kg %*% t(X_j_kg), Q)}
-                if (is.null(C_k_r0)){C_k_r0 = EigenVectors(X_k_gj %*% t(X_k_gj), R)}
+                if (is.null(B_j_q0)){B_j_q0 = eigen(X_j_kg %*% t(X_j_kg), symmetric = T)$vectors[,1:Q]}
+                if (is.null(C_k_r0)){C_k_r0 = eigen(X_k_gj %*% t(X_k_gj), symmetric = T)$vectors[,1:R]}
               }else{
                 if (is.null(B_j_q0)) {
                   B_rand = matrix(runif(J*J), nrow=J, ncol=J)
-                  B_j_q0 = EigenVectors(B_rand %*% t(B_rand),  Q)
+                  B_j_q0 = eigen(B_rand %*% t(B_rand), symmetric=T)$vectors[,1:Q]
                   remove(B_rand)
                   } # random initialization
                 if (is.null(C_k_r0)) {
                   C_rand = matrix(runif(K*K), nrow=K, ncol=K)
-                  C_k_r0 = EigenVectors(C_rand %*% t(C_rand), R)
+                  C_k_r0 = eigen(C_rand %*% t(C_rand), symmetric=T)$vectors[,1:R]
                   remove(C_rand)
                   }
               }
@@ -347,11 +416,11 @@ setMethod('fit.twcfta',
                 fa_iter = fa_iter + 1
 
                 B_j_j = X_j_kg %*% kronecker(I_g_g, C_k_r0%*%t(C_k_r0)) %*% t(X_j_kg)
-                B_j_q = EigenVectors(B_j_j, Q)
+                B_j_q = eigen(B_j_j, symmetric = T)$vectors[,1:Q]
 
                 # updating C_k_r
                 C_k_k = X_k_gj %*% kronecker(B_j_q%*%t(B_j_q), I_g_g) %*% t(X_k_gj)
-                C_k_r = EigenVectors(C_k_k, R)
+                C_k_r = eigen(C_k_k,symmetric = T)$vectors[,1:R]
 
                 # updated centroids matrix
                 Z_g_jk = X_g_jk %*% kronecker(C_k_r%*%t(C_k_r), B_j_q%*%t(B_j_q))
@@ -376,7 +445,7 @@ setMethod('fit.twcfta',
                 }
 
                 if (fa_iter == model@n_max_iter){
-                  if (isTRUE(model@verbose)){print("FA Maximum iterations reached.")}
+                  # if (isTRUE(model@verbose)){print("FA Maximum iterations reached.")}
                   break
                 }
 
@@ -403,10 +472,10 @@ setMethod('fit.twcfta',
               RSS_reduced = sum(diag((Y_i_qr-Z_i_qr)%*%t(Y_i_qr-Z_i_qr)))
 
               # pseudoF scores
-              pseudoF_full = PseudoF_Full(
+              pseudoF_full = pseudof.full(
                 BSS_full, RSS_full, full_tensor_shape=full_tensor_shape,
                 reduced_tensor_shape=reduced_tensor_shape)
-              pseudoF_reduced = PseudoF_Reduced(
+              pseudoF_reduced = pseudof.reduced(
                 BSS_reduced, RSS_reduced, full_tensor_shape=full_tensor_shape,
                 reduced_tensor_shape=reduced_tensor_shape)
 
@@ -477,7 +546,7 @@ setMethod('fit.twcfta',
 
             # factor matrices and centroid matrices
 
-            return(new("result.tandem",
+            return(new("attributes.tandem",
                        U_i_g0=U_i_g_init_simu,
                        B_j_q0=B_j_q_init_simu,
                        C_k_r0=C_k_r_init_simu,
@@ -518,16 +587,14 @@ setMethod('fit.twcfta',
 
 # ------------ TWFCTA ------------
 
-#' TWFCTA model
-#'
-#' @aliases TWFCTA,twfcta-model
-#' @rdname tandem-methods
-#'
+#' @rdname fit.twfcta
 setMethod('fit.twfcta',
           signature=('tandem'),
           function(model, X_i_jk, full_tensor_shape, reduced_tensor_shape){
 
             # ------------ Initialization ------------
+
+            set.seed(model@seed)
 
             # I,J,K and G,Q,R declare
             I=full_tensor_shape[1]
@@ -563,9 +630,9 @@ setMethod('fit.twfcta',
               Fs_fa = c()  # objective function values
 
               # matricize centroid tensor
-              X_i_j_k = Fold(X_i_jk, mode=1, shape=c(I,J,K))
-              X_j_ki = Unfold(X_i_j_k, mode=2)
-              X_k_ij = Unfold(X_i_j_k, mode=3)
+              X_i_j_k = fold(X_i_jk, mode=1, shape=c(I,J,K))
+              X_j_ki = unfold(X_i_j_k, mode=2)
+              X_k_ij = unfold(X_i_j_k, mode=3)
 
               # as direct input
               B_j_q0 = model@B_j_q
@@ -573,17 +640,17 @@ setMethod('fit.twfcta',
 
               # initialize B and C
               if (model@init == 'svd'){
-                if (is.null(B_j_q0)){B_j_q0 = EigenVectors(X_j_ki %*% t(X_j_ki), Q)}
-                if (is.null(C_k_r0)){C_k_r0 = EigenVectors(X_k_ij %*% t(X_k_ij), R)}
+                if (is.null(B_j_q0)){B_j_q0 = eigen(X_j_ki %*% t(X_j_ki), symmetric = T)$vectors[,1:Q]}
+                if (is.null(C_k_r0)){C_k_r0 = eigen(X_k_ij %*% t(X_k_ij), symmetric = T)$vectors[,1:R]}
               }else{
                 if (is.null(B_j_q0)) {
                   B_rand = matrix(runif(J*J), nrow=J, ncol=J)
-                  B_j_q0 = EigenVectors(B_rand %*% t(B_rand),  Q)
+                  B_j_q0 = eigen(B_rand %*% t(B_rand), symmetric=T)$vectors[,1:Q]
                   remove(B_rand)
                 } # random initialization
                 if (is.null(C_k_r0)) {
                   C_rand = matrix(runif(K*K), nrow=K, ncol=K)
-                  C_k_r0 = EigenVectors(C_rand %*% t(C_rand), R)
+                  C_k_r0 = eigen(C_rand %*% t(C_rand), symmetric=T)$vectors[,1:R]
                   remove(C_rand)
                 }
               }
@@ -611,11 +678,11 @@ setMethod('fit.twfcta',
                 fa_iter = fa_iter + 1
 
                 B_j_j = X_j_ki %*% kronecker(I_i_i, C_k_r0%*%t(C_k_r0)) %*% t(X_j_ki)
-                B_j_q = EigenVectors(B_j_j, Q)
+                B_j_q = eigen(B_j_j, symmetric = T)$vectors[,1:Q]
 
                 # updating C_k_r
                 C_k_k = X_k_ij %*% kronecker(B_j_q%*%t(B_j_q), I_i_i) %*% t(X_k_ij)
-                C_k_r = EigenVectors(C_k_k, R)
+                C_k_r = eigen(C_k_k, symmetric = T)$vectors[,1:R]
 
                 # updated centroids matrix
                 Z_i_jk = X_i_jk %*% kronecker(C_k_r%*%t(C_k_r), B_j_q%*%t(B_j_q))
@@ -640,7 +707,7 @@ setMethod('fit.twfcta',
                 }
 
                 if (fa_iter == model@n_max_iter){
-                  if (isTRUE(model@verbose)){print("FA Maximum iterations reached.")}
+                  # if (isTRUE(model@verbose)){print("FA Maximum iterations reached.")}
                   break
                 }
 
@@ -661,7 +728,7 @@ setMethod('fit.twfcta',
 
               if (is.null(U_i_g0)){
 
-                U_i_g0 = RandomMembershipMatrix(I,G,seed=model@random_state)
+                U_i_g0 = generate_rmfm(I,G,seed=model@seed)
                 U_i_g_init = U_i_g0
 
                 # initial objective
@@ -681,7 +748,7 @@ setMethod('fit.twfcta',
                   km_iter = km_iter + 1
 
                   # get random centroids
-                  U_i_g = OneKMeans(Y_i_qr, G, U_i_g=U_i_g0, seed=model@random_state)  # updated membership matrix
+                  U_i_g = onekmeans(Y_i_qr, G, U_i_g=U_i_g0, seed=model@seed)  # updated membership matrix
                   Y_g_qr = diag(1/colSums(U_i_g)) %*% t(U_i_g) %*% Y_i_qr  # compute centroids matrix
 
                   # check if maximizes objective or minimizes the loss
@@ -702,9 +769,9 @@ setMethod('fit.twfcta',
                   }
 
                   if (km_iter == model@n_max_iter){
-                    if (isTRUE(model@verbose)){
-                      print("KM Maximum iterations reached.")
-                    }
+                    # if (isTRUE(model@verbose)){
+                    #   print("KM Maximum iterations reached.")
+                    # }
                     break
                   }
 
@@ -722,23 +789,24 @@ setMethod('fit.twfcta',
               time_elapsed = as.numeric(Sys.time()-start_time)
 
               # updating X
-              Y_i_qr = X_i_jk %*% kronecker(best_C_k_r, best_B_j_q)
+              X_i_jk_N = X_i_jk %*% kronecker(best_C_k_r%*%t(best_C_k_r), best_B_j_q%*%t(best_B_j_q))
+              Y_i_qr = X_i_jk_N %*% kronecker(best_C_k_r, best_B_j_q)
               Z_i_qr = best_U_i_g %*% diag(1/colSums(best_U_i_g)) %*% t(best_U_i_g) %*% Y_i_qr
               Z_i_jk = Z_i_qr %*% t(kronecker(best_C_k_r, best_B_j_q))
 
-              TSS_full = sum(diag(X_i_jk%*%t(X_i_jk)))
+              TSS_full = sum(diag(X_i_jk_N%*%t(X_i_jk_N)))
               BSS_full = sum(diag(Z_i_jk%*%t(Z_i_jk)))
-              RSS_full = sum(diag((X_i_jk-Z_i_jk)%*%t(X_i_jk-Z_i_jk)))
+              RSS_full = sum(diag((X_i_jk_N-Z_i_jk)%*%t(X_i_jk_N-Z_i_jk)))
 
               TSS_reduced = sum(diag(Y_i_qr%*%t(Y_i_qr)))
               BSS_reduced = sum(diag(Z_i_qr%*%t(Z_i_qr)))
               RSS_reduced = sum(diag((Y_i_qr-Z_i_qr)%*%t(Y_i_qr-Z_i_qr)))
 
               # pseudoF scores
-              pseudoF_full = PseudoF_Full(
+              pseudoF_full = pseudof.full(
                 BSS_full, RSS_full, full_tensor_shape=full_tensor_shape,
                 reduced_tensor_shape=reduced_tensor_shape)
-              pseudoF_reduced = PseudoF_Reduced(
+              pseudoF_reduced = pseudof.reduced(
                 BSS_reduced, RSS_reduced, full_tensor_shape=full_tensor_shape,
                 reduced_tensor_shape=reduced_tensor_shape)
 
@@ -775,7 +843,7 @@ setMethod('fit.twfcta',
                 best_time_elapsed_simu = time_elapsed
               }
 
-              if (pseudoF_full > pseudoF_full_simu){
+              if (pseudoF_reduced > pseudoF_reduced_simu){
                 B_j_q_simu = best_B_j_q
                 C_k_r_simu = best_C_k_r
                 U_i_g_simu = best_U_i_g
@@ -802,13 +870,14 @@ setMethod('fit.twfcta',
             }
             # ------------ Result update for best loop ------------
 
-            Y_i_qr = X_i_jk %*% kronecker(C_k_r_simu, B_j_q_simu)
+            X_i_jk_N = X_i_jk %*% kronecker(C_k_r_simu%*%t(C_k_r_simu), B_j_q_simu%*%t(B_j_q_simu))
+            Y_i_qr = X_i_jk_N %*% kronecker(C_k_r_simu, B_j_q_simu)
             Y_g_qr = diag(1/colSums(U_i_g_simu)) %*% t(U_i_g_simu) %*% Y_i_qr
             Z_i_qr = U_i_g_simu %*% Y_g_qr
 
             # factor matrices and centroid matrices
 
-            return(new("result.tandem",
+            return(new("attributes.tandem",
                        U_i_g0=U_i_g_init_simu,
                        B_j_q0=B_j_q_init_simu,
                        C_k_r0=C_k_r_init_simu,
@@ -816,7 +885,7 @@ setMethod('fit.twfcta',
                        B_j_q=B_j_q_simu,
                        C_k_r=C_k_r_simu,
                        Y_g_qr=Y_g_qr,
-                       X_i_jk_scaled=X_i_jk,
+                       X_i_jk_scaled=X_i_jk_N,
 
                        BestTimeElapsed=best_time_elapsed_simu,
                        BestLoop=loop_simu,

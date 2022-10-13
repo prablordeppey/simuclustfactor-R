@@ -5,7 +5,7 @@
 \title{Initialization for the tandem models.}
 \usage{
 tandem(
-  random_state = NULL,
+  seed = NULL,
   verbose = TRUE,
   init = "svd",
   n_max_iter = 10,
@@ -17,24 +17,28 @@ tandem(
 )
 }
 \arguments{
-\item{random_state}{for random number generation}
+\item{seed}{Seed for random sequence generation.}
 
-\item{verbose}{flag to display iteration outputs}
+\item{verbose}{Flag to display iteration outputs for each loop.}
 
-\item{init}{parameter initialization method, 'svd' or 'random'}
+\item{init}{Parameter initialization method, 'svd' or 'random'.}
 
-\item{n_max_iter}{maximum number of iteration to optimize the objective function}
+\item{n_max_iter}{Maximum number of iteration to optimize the objective function.}
 
-\item{n_loops}{maximum number of loops/runs for global results}
+\item{n_loops}{Maximum number of loops/runs for global results.}
 
-\item{tol}{allowable tolerance to check convergence}
+\item{tol}{Allowable tolerance to check convergence.}
 
-\item{U_i_g}{initial membership function matrix for the objects}
+\item{U_i_g}{Initial membership function matrix for the objects.}
 
-\item{B_j_q}{initial component scores matrix for the variables}
+\item{B_j_q}{Initial component scores matrix for the variables.}
 
-\item{C_k_r}{initial component sores matrix for the occasions}
+\item{C_k_r}{Initial component sores matrix for the occasions.}
 }
 \description{
 Initialization for the tandem models.
+}
+\references{
+\insertRef{tandemModels}{simuclustfactor}
+\insertRef{tucker1966}{simuclustfactor}
 }
