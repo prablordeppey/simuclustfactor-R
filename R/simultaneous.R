@@ -277,8 +277,10 @@ setGeneric('fit.ct3clus', function(model, X_i_jk, full_tensor_shape, reduced_ten
 #' @rdname fit.t3clus
 setMethod('fit.t3clus',
           signature=('simultaneous'),
-          function(model){
-            print('Not Implemented Yet. Use CT3Clus with alpha=1')
+          function(model, X_i_jk, full_tensor_shape, reduced_tensor_shape){
+            return(
+              fit.ct3clus(model, X_i_jk=X_i_jk, full_tensor_shape=full_tensor_shape, reduced_tensor_shape=reduced_tensor_shape, alpha = 1)
+            )
           }
 )
 
@@ -288,8 +290,10 @@ setMethod('fit.t3clus',
 #' @rdname fit.3fkmeans
 setMethod('fit.3fkmeans',
           signature=('simultaneous'),
-          function(model){
-            print('Not Implemented Yet. Use CT3Clus with alpha=0')
+          function(model, X_i_jk, full_tensor_shape, reduced_tensor_shape){
+            return(
+              fit.ct3clus(model, X_i_jk=X_i_jk, full_tensor_shape=full_tensor_shape, reduced_tensor_shape=reduced_tensor_shape, alpha = 0)
+            )
           }
 )
 

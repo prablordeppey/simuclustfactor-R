@@ -7,7 +7,7 @@
 \usage{
 fit.t3clus(model, X_i_jk, full_tensor_shape, reduced_tensor_shape)
 
-\S4method{fit.t3clus}{simultaneous}(model)
+\S4method{fit.t3clus}{simultaneous}(model, X_i_jk, full_tensor_shape, reduced_tensor_shape)
 }
 \arguments{
 \item{model}{Initialized simultaneous model.}

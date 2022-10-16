@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">simuclustfactor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2</span>
       </span>
     </div>
 
@@ -50,7 +50,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fit.3fkmeans</span><span class="op">(</span><span class="va">model</span>, <span class="va">X_i_jk</span>, <span class="va">full_tensor_shape</span>, <span class="va">reduced_tensor_shape</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for simultaneous</span></span>
-<span><span class="fu">fit.3fkmeans</span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">fit.3fkmeans</span><span class="op">(</span><span class="va">model</span>, <span class="va">X_i_jk</span>, <span class="va">full_tensor_shape</span>, <span class="va">reduced_tensor_shape</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -96,7 +96,18 @@ Vichi M, Rocci R, Kiers H (2007).
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">X_i_jk</span> <span class="op">=</span> <span class="fu"><a href="generate_dataset.html">generate_dataset</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">X_i_jk</span></span></span>
 <span class="r-in"><span><span class="va">model</span> <span class="op">=</span> <span class="fu"><a href="simultaneous.html">simultaneous</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tfkmeans</span> <span class="op">=</span> <span class="fu">fit.3fkmeans</span><span class="op">(</span><span class="va">model</span>, <span class="va">X_i_jk</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8</span>,<span class="fl">5</span>,<span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">3</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Not Implemented Yet. Use CT3Clus with alpha=0"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Loop"            "Best Iter"       "Loop Time"       "BSS Full (%)"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5] "BSS Reduced (%)" "PF Full"         "PF Reduced"      "Converged"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  1.0000  3.0000  0.0036 35.8500 35.8500  1.1523 12.6752  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0000  2.0000  0.0026 38.6700 38.6700  1.2429 13.6720  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  3.0000  1.0000  0.0077 40.6400 40.6400  1.3063 14.3697  0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  4.0000  1.0000  0.0076 34.9300 34.9300  1.1228 12.3511  0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  5.0000  1.0000  0.0032 31.9300 31.9300  1.0263 11.2893  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  6.0000  1.0000  0.0137 44.2900 44.2900  1.4236 15.6597  0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  7.0000  1.0000  0.0090 28.7000 28.7000  0.9224 10.1466  0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  8.0000  1.0000  0.0011 33.0700 33.0700  1.0631 11.6941  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  9.0000  2.0000  0.0081 34.9300 34.9300  1.1228 12.3511  0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.0000  1.0000  0.0088 26.8500 26.8500  0.8632  9.4954  0.0000</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

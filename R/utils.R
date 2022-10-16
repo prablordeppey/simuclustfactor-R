@@ -192,27 +192,19 @@ split_update = function(LC, LC_members, LC_scores, EC, U_i_g, C_g, seed){
 
   M = length(LC_members)  # number of objects in the largest cluster.
 
-  if (M==2){
+  # perform k-means on LC members
+  U_m_2 = generate_rmfm(I=M, G=2, seed = seed)  # initialize matrix with 2 groups
+  Y_2_qr = diag(1/colSums(U_m_2)) %*% t(U_m_2) %*% LC_scores  # 2xQR centroids matrix for subclusters
 
-    U_i_g[LC_members[1],] = 0
-    U_i_g[LC_members[1],EC] = 0
+  # assign each cluster member to the respective sub-cluster
+  for (i in 1:dim(LC_scores)[1]){
+    # dist = rowSums((LC_scores[i,]-Y_2_qr)**2)  # calculate distance between obj and the 2 sub-centroids.
+    dist = rowSums(sweep(Y_2_qr,2,LC_scores[i,])^2)
+    min_dist_cluster = which.min(dist)  # get cluster with smallest distance from object.
 
-  }else{
-
-    # perform k-means on LC members
-    U_m_2 = generate_rmfm(I=M, G=2, seed = seed)  # initialize matrix with 2 groups
-    Y_2_qr = diag(1/colSums(U_m_2)) %*% t(U_m_2) %*% LC_scores  # 2xQR centroids matrix for subclusters
-
-    # assign each cluster member to the respective sub-cluster
-    for (i in 1:dim(LC_scores)[1]){
-      # dist = rowSums((LC_scores[i,]-Y_2_qr)**2)  # calculate distance between obj and the 2 sub-centroids.
-      dist = rowSums(sweep(Y_2_qr,2,LC_scores[i,])^2)
-      min_dist_cluster = which.min(dist)  # get cluster with smallest distance from object.
-
-      if (min_dist_cluster == 1){
-        U_i_g[LC_members[i],] = 0  # unassign the obj from the large cluster.
-        U_i_g[LC_members[i], EC] = 1  # assign the obj to the empty cluster.
-      }
+    if (min_dist_cluster == 1){
+      U_i_g[LC_members[i],] = 0  # unassign the obj from the large cluster.
+      U_i_g[LC_members[i], EC] = 1  # assign the obj to the empty cluster.
     }
   }
 

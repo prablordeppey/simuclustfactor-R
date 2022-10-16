@@ -7,7 +7,7 @@
 \usage{
 fit.3fkmeans(model, X_i_jk, full_tensor_shape, reduced_tensor_shape)
 
-\S4method{fit.3fkmeans}{simultaneous}(model)
+\S4method{fit.3fkmeans}{simultaneous}(model, X_i_jk, full_tensor_shape, reduced_tensor_shape)
 }
 \arguments{
 \item{model}{Initialized simultaneous model.}

@@ -22,10 +22,10 @@ Tandem Class
 
 \item{\code{tol}}{numeric. Tolerance level/acceptable error. Defaults to 1e-5.}
 
-\item{\code{U_i_g}}{numeric. (I,G) initial stochastic membership function matrix.}
+\item{\code{U_i_g}}{matrix. (I,G) initial stochastic membership function matrix.}
 
-\item{\code{B_j_q}}{numeric. (J,Q) initial component weight matrix for variables.}
+\item{\code{B_j_q}}{matrix. (J,Q) initial component weight matrix for variables.}
 
-\item{\code{C_k_r}}{numeric. (K,R) initial component weight matrix for occasions.}
+\item{\code{C_k_r}}{matrix. (K,R) initial component weight matrix for occasions.}
 }}
 

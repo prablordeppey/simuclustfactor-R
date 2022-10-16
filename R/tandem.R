@@ -1,6 +1,6 @@
 # define custom data type. multiple
 setClassUnion("numericORnull", c("numeric", "NULL"))
-setClassUnion("matrixORnull", c("matrix", "NULL"))
+setClassUnion("matrixORnull", c("numeric","matrix", "NULL"))
 setClassUnion("logicalORnull", c("logical", "NULL"))
 setClassUnion("integerORnull", c("integer", "NULL"))
 
@@ -124,9 +124,9 @@ setClass("attributes.tandem",
 #' @slot n_max_iter numeric. Maximum number of iterations. Defaults to 10.
 #' @slot n_loops numeric. Number of initialization to guarantee global results. Defaults to 10.
 #' @slot tol numeric. Tolerance level/acceptable error. Defaults to 1e-5.
-#' @slot U_i_g numeric. (I,G) initial stochastic membership function matrix.
-#' @slot B_j_q numeric. (J,Q) initial component weight matrix for variables.
-#' @slot C_k_r numeric. (K,R) initial component weight matrix for occasions.
+#' @slot U_i_g matrix. (I,G) initial stochastic membership function matrix.
+#' @slot B_j_q matrix. (J,Q) initial component weight matrix for variables.
+#' @slot C_k_r matrix. (K,R) initial component weight matrix for occasions.
 #'
 #' @importFrom methods setClass
 #'
@@ -135,14 +135,14 @@ setClass("attributes.tandem",
 setClass("tandem",
          slots=c(
            verbose='logical',
-           seed='numericORnull',
            init='character',
            n_max_iter='numeric',
            n_loops='numeric',
            tol='numeric',
-           U_i_g='numericORnull',
-           B_j_q='numericORnull',
-           C_k_r='numericORnull'
+           U_i_g='matrixORnull',
+           B_j_q='matrixORnull',
+           C_k_r='matrixORnull',
+           seed='numericORnull'
           )
 )
 
@@ -171,8 +171,8 @@ setClass("tandem",
 #'
 tandem <- function(seed=NULL, verbose=TRUE, init='svd', n_max_iter=10, n_loops=10, tol=1e-5, U_i_g=NULL, B_j_q=NULL, C_k_r=NULL){
   new("tandem",
-      seed=seed,
       verbose=verbose,
+      seed=seed,
       init=init,
       n_max_iter=n_max_iter,
       n_loops=n_loops,
@@ -298,61 +298,62 @@ setMethod('fit.twcfta',
               km_converged = FALSE
               Fs_km = c()
 
+              # if (is.null(U_i_g0)){
+
               if (is.null(U_i_g0)){
-
                 U_i_g0 = generate_rmfm(I,G,seed=model@seed)
-                U_i_g_init = U_i_g0
+              }
+              U_i_g_init = U_i_g0
 
-                # initial objective
-                X_g_jk0 = diag(1/colSums(U_i_g0)) %*% t(U_i_g0) %*% X_i_jk  # compute centroids matrix
-                F0 = norm(U_i_g0 %*% X_g_jk0, type = 'F')  # objective to maximize
-                Fs_km = c(Fs_km,F0)
+              # initial objective
+              X_g_jk0 = diag(1/colSums(U_i_g0)) %*% t(U_i_g0) %*% X_i_jk  # compute centroids matrix
+              F0 = norm(U_i_g0 %*% X_g_jk0, type = 'F')  # objective to maximize
+              Fs_km = c(Fs_km,F0)
 
-                # clustering on objects (via KMeans applied to X_i_jk)
-                conv = 2*model@tol
+              # clustering on objects (via KMeans applied to X_i_jk)
+              conv = 2*model@tol
 
-                # iterates init
-                best_km_iter = 1
-                best_U_i_g = U_i_g0
+              # iterates init
+              best_U_i_g = U_i_g0
 
-                while (conv > model@tol){
+              while (conv > model@tol){
 
-                  km_iter = km_iter + 1
+                km_iter = km_iter + 1
 
-                  # get random centroids
-                  U_i_g = onekmeans(X_i_jk, G, U_i_g=U_i_g0, seed=model@seed)  # updated membership matrix
-                  X_g_jk = diag(1/colSums(U_i_g)) %*% t(U_i_g) %*% X_i_jk  # compute centroids matrix
+                # get random centroids
+                U_i_g = onekmeans(X_i_jk, G, U_i_g=U_i_g0, seed=model@seed)  # updated membership matrix
+                X_g_jk = diag(1/colSums(U_i_g)) %*% t(U_i_g) %*% X_i_jk  # compute centroids matrix
 
-                  # check if maximizes orbjective or minimizes the loss
-                  F = norm(U_i_g %*% X_g_jk,type = 'F')  # frobenius norm
-                  conv = abs(F-F0)
+                # check if maximizes orbjective or minimizes the loss
+                F = norm(U_i_g %*% X_g_jk,type = 'F')  # frobenius norm
+                conv = abs(F-F0)
 
-                  if (F >= F0){
-                    F0 = F
-                    Fs_km = c(Fs_km, F)
-                    best_U_i_g = U_i_g
-                    best_km_iter = km_iter
-                  }
-
-                  if (conv < model@tol){
-                    km_converged = TRUE
-                    n_kmConverges = n_kmConverges+1
-                    break
-                  }
-
-                  if (km_iter == model@n_max_iter){
-                    # if (isTRUE(model@verbose)){
-                    #   print("KM Maximum iterations reached.")
-                    # }
-                    break
-                  }
-                  U_i_g0 = U_i_g
+                if (F >= F0){
+                  F0 = F
+                  Fs_km = c(Fs_km, F)
+                  best_U_i_g = U_i_g
+                  best_km_iter = km_iter
                 }
 
-              }else{
-                U_i_g_init = U_i_g0
-                best_U_i_g = U_i_g_init
+                if (conv < model@tol){
+                  km_converged = TRUE
+                  n_kmConverges = n_kmConverges+1
+                  break
+                }
+
+                if (km_iter == model@n_max_iter){
+                  # if (isTRUE(model@verbose)){
+                  #   print("KM Maximum iterations reached.")
+                  # }
+                  break
+                }
+                U_i_g0 = U_i_g
               }
+
+              # }else{
+              #   U_i_g_init = U_i_g0
+              #   best_U_i_g = U_i_g_init
+              # }
 
               # updated centroids in the full space
               X_g_jk = diag(1/colSums(best_U_i_g)) %*% t(best_U_i_g) %*% X_i_jk
@@ -723,62 +724,58 @@ setMethod('fit.twfcta',
               Fs_km = c()
 
               if (is.null(U_i_g0)){
-
                 U_i_g0 = generate_rmfm(I,G,seed=model@seed)
-                U_i_g_init = U_i_g0
+              }
+              U_i_g_init = U_i_g0
 
-                # initial objective
-                Y_g_qr0 = diag(1/colSums(U_i_g0)) %*% t(U_i_g0) %*% Y_i_qr  # compute centroids matrix
-                F0 = norm(U_i_g0 %*% Y_g_qr0, type = 'F')  # objective to maximize
-                Fs_km = c(Fs_km,F0)
+              # initial objective
+              Y_g_qr0 = diag(1/colSums(U_i_g0)) %*% t(U_i_g0) %*% Y_i_qr  # compute centroids matrix
+              F0 = norm(U_i_g0 %*% Y_g_qr0, type = 'F')  # objective to maximize
+              Fs_km = c(Fs_km,F0)
 
-                # clustering on objects (via KMeans applied to Y_i_qr)
-                conv = 2*model@tol
+              # clustering on objects (via KMeans applied to Y_i_qr)
+              conv = 2*model@tol
 
-                # iterates init
-                best_km_iter = 1
-                best_U_i_g = U_i_g0
+              # iterates init
+              best_km_iter = 1
+              best_U_i_g = U_i_g0
 
-                while (conv > model@tol){
+              while (conv > model@tol){
 
-                  km_iter = km_iter + 1
+                km_iter = km_iter + 1
 
-                  # get random centroids
-                  U_i_g = onekmeans(Y_i_qr, G, U_i_g=U_i_g0, seed=model@seed)  # updated membership matrix
-                  Y_g_qr = diag(1/colSums(U_i_g)) %*% t(U_i_g) %*% Y_i_qr  # compute centroids matrix
+                # get random centroids
+                U_i_g = onekmeans(Y_i_qr, G, U_i_g=U_i_g0, seed=model@seed)  # updated membership matrix
+                Y_g_qr = diag(1/colSums(U_i_g)) %*% t(U_i_g) %*% Y_i_qr  # compute centroids matrix
 
-                  # check if maximizes objective or minimizes the loss
-                  F = norm(U_i_g %*% Y_g_qr,type = 'F')  # frobenius norm
-                  conv = abs(F-F0)
+                # check if maximizes objective or minimizes the loss
+                F = norm(U_i_g %*% Y_g_qr,type = 'F')  # frobenius norm
+                conv = abs(F-F0)
 
-                  if (F >= F0){
-                    F0 = F
-                    Fs_km = c(Fs_km, F)
-                    best_U_i_g = U_i_g
-                    best_km_iter = km_iter
-                  }
-
-                  if (conv < model@tol){
-                    km_converged = TRUE
-                    n_kmConverges = n_kmConverges+1
-                    break
-                  }
-
-                  if (km_iter == model@n_max_iter){
-                    # if (isTRUE(model@verbose)){
-                    #   print("KM Maximum iterations reached.")
-                    # }
-                    break
-                  }
-
-                  U_i_g0 = U_i_g
-
+                if (F >= F0){
+                  F0 = F
+                  Fs_km = c(Fs_km, F)
+                  best_U_i_g = U_i_g
+                  best_km_iter = km_iter
                 }
 
-              }else{
-                U_i_g_init = U_i_g0
-                best_U_i_g = U_i_g_init
+                if (conv < model@tol){
+                  km_converged = TRUE
+                  n_kmConverges = n_kmConverges+1
+                  break
+                }
+
+                if (km_iter == model@n_max_iter){
+                  # if (isTRUE(model@verbose)){
+                  #   print("KM Maximum iterations reached.")
+                  # }
+                  break
+                }
+
+                U_i_g0 = U_i_g
+
               }
+
 
               # ----------- Compute metrics for loop/run --------------
 

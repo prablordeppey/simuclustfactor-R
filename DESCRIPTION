@@ -1,7 +1,7 @@
 Package: simuclustfactor
 Type: Package
 Title: Simultaneous Clustering and Factorial Decomposition of Three-Way Datasets
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: c(
     person("Prosper", "Ablordeppey", role = c("aut", "cre"), email = "pablordeppey@ua.pt",
       comment = c(ORCID = "0000-0002-5581-7005")),
@@ -10,7 +10,7 @@ Authors@R: c(
     person("Giorgia", "Zaccaria", role = "ctb", email = "giorgia.zaccaria@unitelmasapienza.it",
       comment = c(ORCID = "0000-0001-9119-9104")))
 Maintainer: Prosper Ablordeppey <pablordeppey@ua.pt>
-Description: We implement two iterative techniques called T3Clus and 3Fkmeans, aimed at simultaneously clustering objects and a factorial dimensionality reduction of variables and occasions on three-mode datasets. In addition, an implementation combining these two simultaneous procedures called CT3Clus integrates a hyperparameter alpha, where alpha=0 evaluates to 3FKMeans and alpha=1 is T3Clus. Furthermore, the traditional tandem procedures of T3Clus (TWCFTA) and 3FKMeans (TWFCTA) for sequential clustering-factorial decomposition (TWCFTA) and vice-versa (TWFCTA) were implemented in the package.
+Description: Implements two iterative techniques called T3Clus and 3Fkmeans, aimed at simultaneously clustering objects and a factorial dimensionality reduction of variables and occasions on three-mode datasets developed by Vichi et al. (2007) <doi:10.1007/s00357-007-0006-x>.\n Also, we provide a convex combination of these two simultaneous procedures called CT3Clus and based on a hyperparameter alpha (alpha in [0,1], with 3FKMeans for alpha=0 and T3Clus for alpha= 1) also developed by Vichi et al. (2007) <doi:10.1007/s00357-007-0006-x>.\n Furthermore, we implemented the traditional tandem procedures of T3Clus (TWCFTA) and 3FKMeans (TWFCTA) for sequential clustering-factorial decomposition (TWCFTA), and vice-versa (TWFCTA) proposed by P. Arabie and L. Hubert (1996) <doi:10.1007/978-3-642-79999-0_1>.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

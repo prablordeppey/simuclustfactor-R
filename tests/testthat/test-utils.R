@@ -29,7 +29,7 @@ test_that("onekmeans() returns correct label set", {
   # data matrix
   X_i_jk = generate_dataset(seed=seed)$X_i_jk
 
-  # initial membership matrix
+  # ---- updating U_i_g initial membership matrix
   U_i_g0 = generate_rmfm(I=8,G=3,seed = seed)
   U_i_g = U_i_g0
 
@@ -38,10 +38,19 @@ test_that("onekmeans() returns correct label set", {
     U_i_g = onekmeans(X_i_jk, U_i_g = U_i_g, G = 3)
   }
 
-  # print(U_i_g)
-
   # check labelset for final iteration is correct
   expect_equal(which(U_i_g==1), c(1,8,10,13,14,15,19,20))
+
+  # ---- no U_i_g given to update
+  U_i_g = onekmeans(X_i_jk, G = 3, seed = seed)
+  expect_equal(which(U_i_g==1), c(1,8,10,13,14,15,19,20))
+
+  # ---- given U_i_g with empty cluster given to update
+  U_i_g = onekmeans(X_i_jk, G = 3, seed = seed)
+  U_i_g[,1]=0
+  U_i_g = onekmeans(X_i_jk, G = 3, U_i_g = U_i_g, seed = seed)
+  expect_equal(which(U_i_g==1), c(2,7,8,13,14,17,19,20))
+
 })
 
 
