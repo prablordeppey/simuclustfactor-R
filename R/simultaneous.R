@@ -137,7 +137,7 @@ setClass("simultaneous",
 
 #' Simultaneous Model Constructor
 #'
-#' Model for the simultaneous methods.
+#' Initialize model object required by the simultaneous methods.
 #'
 #' @param seed Seed for random sequence generation.
 #' @param verbose Flag to display output result for each loop.
@@ -148,6 +148,29 @@ setClass("simultaneous",
 #' @param U_i_g Membership function matrix for the objects.
 #' @param B_j_q Component matrix for the variables.
 #' @param C_k_r Component matrix for the occasions.
+#'
+#' @return An object of class "simultaneous".
+#'
+#' @details {
+#'    Two simultaneous models T3Clus and 3FKMeans are the implemented methods.
+#'    \itemize{
+#'       \item T3Clus finds B_j_q and C_k_r such that the between-clusters
+#'       deviance of the component scores is maximized.
+#'      \item 3FKMeans finds B_j_q and C_k_r such that the within-clusters
+#'      deviance of the component scores is minimized.
+#'    }
+#' }
+#'
+#' @note {
+#'    The model finds the best partition described by the best orthogonal
+#'    linear combinations of the variables and orthogonal linear combinations
+#'    of the occasions.
+#' }
+#'
+#' @seealso {
+#'  \code{\link{fit.t3clus}} \code{\link{fit.3fkmeans}}
+#'  \code{\link{fit.ct3clus}} \code{\link{tandem}}
+#' }
 #'
 #' @export
 #'
@@ -189,6 +212,41 @@ setClass('ct3clus', contains='simultaneous')
 #' @param full_tensor_shape Dimensions of the tensor in full-space.
 #' @param reduced_tensor_shape Dimensions of tensor in the reduced-space.
 #'
+#' @return Output attributes accesible via the '@' operator.
+#' \itemize{
+#'    \item U_i_g0 - Initial object membership function matrix
+#'    \item B_j_q0 - Initial factor/component matrix for the variables
+#'    \item C_k_r0 - Initial factor/component matrix for the occasions
+#'    \item U_i_g - Final/updated object membership function matrix
+#'    \item B_j_q - Final/updated factor/component matrix for the variables
+#'    \item C_k_r - Final/updated factor/component matrix for the occasions
+#'    \item Y_g_qr - Derived centroids in the reduced space (data matrix)
+#'    \item X_i_jk_scaled - Standardized dataset matrix
+#'    \item BestTimeElapsed - Execution time for the best iterate
+#'    \item BestLoop - Loop that obtained the best iterate
+#'    \item BestIteration - Iteration yielding the best results
+#'    \item Converged - Flag to check if algorithm converged for the K-means
+#'    \item nConverges - Number of loops that converged for the K-means
+#'    \item TSS_full - Total deviance in the full-space
+#'    \item BSS_full - Between deviance in the reduced-space
+#'    \item RSS_full - Residual deviance in the reduced-space
+#'    \item PF_full - PseudoF in the full-space
+#'    \item TSS_reduced - Total deviance in the reduced-space
+#'    \item BSS_reduced - Between deviance in the reduced-space
+#'    \item RSS_reduced - Residual deviance in the reduced-space
+#'    \item PF_reduced - PseudoF in the reduced-space
+#'    \item PF - Weighted PseudoF score
+#'    \item Labels - Object cluster assignments
+#'    \item Fs - Objective function values for the KM best iterate
+#'    \item Enorm - Average l2 norm of the residual norm.
+#' }
+#'
+#' @details {
+#'    The procedure performs simultaneously the sequential TWCFTA model.
+#'    The model finds B_j_q and C_k_r such that the between-clusters deviance of
+#'    the component scores is maximized.
+#' }
+#'
 #' @export
 #' @name fit.t3clus
 #' @rdname fit.t3clus
@@ -218,6 +276,41 @@ setGeneric('fit.t3clus', function(model, X_i_jk, full_tensor_shape, reduced_tens
 #' @param full_tensor_shape Dimensions of the tensor in full-space.
 #' @param reduced_tensor_shape Dimensions of tensor in the reduced-space.
 #'
+#' @return Output attributes accesible via the '@' operator.
+#' \itemize{
+#'    \item U_i_g0 - Initial object membership function matrix
+#'    \item B_j_q0 - Initial factor/component matrix for the variables
+#'    \item C_k_r0 - Initial factor/component matrix for the occasions
+#'    \item U_i_g - Final/updated object membership function matrix
+#'    \item B_j_q - Final/updated factor/component matrix for the variables
+#'    \item C_k_r - Final/updated factor/component matrix for the occasions
+#'    \item Y_g_qr - Derived centroids in the reduced space (data matrix)
+#'    \item X_i_jk_scaled - Standardized dataset matrix
+#'    \item BestTimeElapsed - Execution time for the best iterate
+#'    \item BestLoop - Loop that obtained the best iterate
+#'    \item BestIteration - Iteration yielding the best results
+#'    \item Converged - Flag to check if algorithm converged for the K-means
+#'    \item nConverges - Number of loops that converged for the K-means
+#'    \item TSS_full - Total deviance in the full-space
+#'    \item BSS_full - Between deviance in the reduced-space
+#'    \item RSS_full - Residual deviance in the reduced-space
+#'    \item PF_full - PseudoF in the full-space
+#'    \item TSS_reduced - Total deviance in the reduced-space
+#'    \item BSS_reduced - Between deviance in the reduced-space
+#'    \item RSS_reduced - Residual deviance in the reduced-space
+#'    \item PF_reduced - PseudoF in the reduced-space
+#'    \item PF - Weighted PseudoF score
+#'    \item Labels - Object cluster assignments
+#'    \item Fs - Objective function values for the KM best iterate
+#'    \item Enorm - Average l2 norm of the residual norm.
+#' }
+#'
+#' @details {
+#'    The procedure performs simultaneously the sequential TWFCTA model.
+#'    The model finds B_j_q and C_k_r such that the within-clusters deviance of
+#'    the component scores is minimized.
+#' }
+#'
 #' @export
 #'
 #' @importFrom Rdpack reprompt
@@ -242,13 +335,46 @@ setGeneric('fit.3fkmeans', function(model, X_i_jk, full_tensor_shape, reduced_te
 #' CT3Clus Model
 #'
 #' Implements simultaneous T3Clus and 3FKMeans integrating
-#' an alpha value
+#' an alpha value between 0 and 1 inclusive for a weighted result.
 #'
 #' @param model Initialized simultaneous model.
 #' @param X_i_jk Matricized tensor along mode-1 (I objects).
 #' @param full_tensor_shape Dimensions of the tensor in full space.
 #' @param reduced_tensor_shape Dimensions of tensor in the reduced space.
 #' @param alpha 0<alpha>1 hyper parameter. Model is T3Clus when alpha=1 and 3FKMeans when alpha=0.
+#'
+#' @return Output attributes accesible via the '@' operator.
+#' \itemize{
+#'    \item U_i_g0 - Initial object membership function matrix
+#'    \item B_j_q0 - Initial factor/component matrix for the variables
+#'    \item C_k_r0 - Initial factor/component matrix for the occasions
+#'    \item U_i_g - Final/updated object membership function matrix
+#'    \item B_j_q - Final/updated factor/component matrix for the variables
+#'    \item C_k_r - Final/updated factor/component matrix for the occasions
+#'    \item Y_g_qr - Derived centroids in the reduced space (data matrix)
+#'    \item X_i_jk_scaled - Standardized dataset matrix
+#'    \item BestTimeElapsed - Execution time for the best iterate
+#'    \item BestLoop - Loop that obtained the best iterate
+#'    \item BestIteration - Iteration yielding the best results
+#'    \item Converged - Flag to check if algorithm converged for the K-means
+#'    \item nConverges - Number of loops that converged for the K-means
+#'    \item TSS_full - Total deviance in the full-space
+#'    \item BSS_full - Between deviance in the reduced-space
+#'    \item RSS_full - Residual deviance in the reduced-space
+#'    \item PF_full - PseudoF in the full-space
+#'    \item TSS_reduced - Total deviance in the reduced-space
+#'    \item BSS_reduced - Between deviance in the reduced-space
+#'    \item RSS_reduced - Residual deviance in the reduced-space
+#'    \item PF_reduced - PseudoF in the reduced-space
+#'    \item PF - Weighted PseudoF score
+#'    \item Labels - Object cluster assignments
+#'    \item Fs - Objective function values for the KM best iterate
+#'    \item Enorm - Average l2 norm of the residual norm.
+#' }
+#'
+#' @seealso {
+#'  \code{\link{fit.t3clus}} \code{\link{fit.3fkmeans}} \code{\link{simultaneous}}
+#' }
 #'
 #' @export
 #' @name fit.ct3clus

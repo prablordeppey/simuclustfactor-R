@@ -18,7 +18,7 @@ in a sequential fashion."><!-- mathjax --><script src="https://cdnjs.cloudflare.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">simuclustfactor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3</span>
       </span>
     </div>
 
@@ -73,6 +73,61 @@ in a sequential fashion.</p>
 <dd><p>Dimensions of tensor in the reduced space.</p></dd>
 
 </dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    
+
+<p>Output attributes accesible via the '@' operator.</p><ul><li><p>U_i_g0 - Initial object membership function matrix.</p></li>
+<li><p>B_j_q0 - Initial factor/component matrix for the variables.</p></li>
+<li><p>C_k_r0 - Initial factor/component matrix for the occasions.</p></li>
+<li><p>U_i_g - Final/updated object membership function matrix.</p></li>
+<li><p>B_j_q - Final/updated factor/component matrix for the variables.</p></li>
+<li><p>C_k_r - Final/updated factor/component matrix for the occasions.</p></li>
+<li><p>Y_g_qr - Derived centroids in the reduced space (data matrix).</p></li>
+<li><p>X_i_jk_scaled - Standardized dataset matrix.</p></li>
+<li><p>BestTimeElapsed - Execution time for the best iterate.</p></li>
+<li><p>BestLoop - Loop that obtained the best iterate.</p></li>
+<li><p>BestKmIteration - Number of iteration until best iterate for the K-means.</p></li>
+<li><p>BestFaIteration - Number of iteration until best iterate for the FA.</p></li>
+<li><p>FaConverged - Flag to check if algorithm converged for the K-means.</p></li>
+<li><p>KmConverged - Flag to check if algorithm converged for the Factor Decomposition.</p></li>
+<li><p>nKmConverges - Number of loops that converged for the K-means.</p></li>
+<li><p>nFaConverges - Number of loops that converged for the Factor decomposition.</p></li>
+<li><p>TSS_full - Total deviance in the full-space.</p></li>
+<li><p>BSS_full - Between deviance in the reduced-space.</p></li>
+<li><p>RSS_full - Residual deviance in the reduced-space.</p></li>
+<li><p>PF_full - PseudoF in the full-space.</p></li>
+<li><p>TSS_reduced - Total deviance in the reduced-space.</p></li>
+<li><p>BSS_reduced - Between deviance in the reduced-space.</p></li>
+<li><p>RSS_reduced - Residual deviance in the reduced-space.</p></li>
+<li><p>PF_reduced - PseudoF in the reduced-space.</p></li>
+<li><p>PF - Actual PseudoF value to obtain best loop.</p></li>
+<li><p>Labels - Object cluster assignments.</p></li>
+<li><p>FsKM - Objective function values for the KM best iterate.</p></li>
+<li><p>FsFA - Objective function values for the FA best iterate.</p></li>
+<li><p>Enorm - Average l2 norm of the residual norm.</p></li>
+</ul></div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>The procedure requires sequential clustering and factorial decomposition.
+   </p><ul><li><p>The K-means clustering algorithm is initially applied to the
+      matricized tensor X_i_jk to obtain the centroids matrix X_g_jk and the
+      membership matrix U_i_g.</p></li>
+<li><p>The Tucker2 decomposition technique is then implemented on the
+      centroids matrix X_g_jk to yield the core centroids matrix Y_g_qr and
+      the component weights matrices B_j_q and C_k_r.</p></li>
+</ul></div>
+    <div id="note">
+    <h2>Note</h2>
+    <p></p><ul><li><p>This procedure is useful to further interpret the between clusters
+      variability of the data and to understand the variables and/or occasions
+      that most contribute to discriminate the clusters. However, the application
+      of this technique could lead to the masking of variables that are not
+      informative of the clustering structure.</p></li>
+<li><p>since the Tucker2 model is applied after the clustering, this
+      cannot help select the most relevant information for the clustering in
+      the dataset.</p></li>
+</ul></div>
     <div id="references">
     <h2>References</h2>
     <p>Arabie P, Hubert L (1996).
@@ -85,6 +140,10 @@ Tucker L (1966).
 <a href="https://doi.org/10.1007/BF02289464" class="external-link">doi:10.1007/BF02289464</a>
 , <a href="https://ideas.repec.org/a/spr/psycho/v31y1966i3p279-311.html" class="external-link">https://ideas.repec.org/a/spr/psycho/v31y1966i3p279-311.html</a>.</p>
     </div>
+    <div id="see-also">
+    <h2>See also</h2>
+    <div class="dont-index"><p><code><a href="fit.twfcta.html">fit.twfcta</a></code> <code><a href="tandem.html">tandem</a></code></p></div>
+    </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
@@ -94,25 +153,25 @@ Tucker L (1966).
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "Loop"            "Best KM Iter"    "Best FA Iter"    "Loop Time"      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "BSS Full (%)"    "BSS Reduced (%)" "PF Full"         "PF Reduced"     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "KM Converged"    "FA Converged"   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  1.0000  1.0000  5.0000  0.0018 17.7300 42.1300  1.2892 14.1816  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  1.0000  2.0000  4.0000  0.0019 23.6800 56.4700  1.7225 18.9477  1.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10]  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  2.0000  1.0000  7.0000  0.0022 27.2000 69.7600  1.9782 21.7606  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  2.0000  1.0000  3.0000  0.0012 26.3100 57.3000  1.9132 21.0454  1.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10]  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  3.0000  1.0000  4.0000  0.0058 30.9300 70.3900  2.2492 24.7417  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  3.0000  2.0000  3.0000  0.0016 24.5400 54.1400  1.7848 19.6328  1.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10]  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  4.0000  1.0000  4.0000  0.0015 22.9000 55.2800  1.6657 18.3227  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  4.0000  1.0000  3.0000  0.0012 24.7700 52.2300  1.8016 19.8177  1.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10]  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  5.0000  2.0000  7.0000  0.0024 30.3400 63.3800  2.2063 24.2698  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  5.0000  1.0000  6.0000  0.0019 16.2800 42.4400  1.1837 13.0212  1.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10]  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  6.0000  1.0000  3.0000  0.0014 24.8700 61.9100  1.8090 19.8990  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  6.0000  1.0000  7.0000  0.0022 21.1100 51.4800  1.5353 16.8887  1.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10]  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  7.0000  2.0000  6.0000  0.0025 24.9400 64.2100  1.8136 19.9500  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  7.0000  1.0000  4.0000  0.0015 25.4900 65.7300  1.8536 20.3893  1.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10]  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  8.0000  1.0000  4.0000  0.0017 27.9000 70.9000  2.0293 22.3220  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  8.0000  1.0000  6.0000  0.0019 24.5500 57.6600  1.7852 19.6373  1.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10]  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  9.0000  1.0000  4.0000  0.0016 19.7000 44.0200  1.4328 15.7611  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  9.0000  1.0000  4.0000  0.0018 24.4000 59.3800  1.7746 19.5208  1.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10]  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 10.0000  1.0000 10.0000  0.0028 29.6400 64.5300  2.1556 23.7112  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 10.0000  1.0000 10.0000  0.0027 20.5300 55.0900  1.4931 16.4236  1.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10]  0.0000</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

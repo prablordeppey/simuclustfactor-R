@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">simuclustfactor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.3</span>
       </span>
     </div>
 
@@ -71,6 +71,42 @@
 <dd><p>Dimensions of tensor in the reduced-space.</p></dd>
 
 </dl></div>
+    <div id="value">
+    <h2>Value</h2>
+    
+
+<p>Output attributes accesible via the '@' operator.</p><ul><li><p>U_i_g0 - Initial object membership function matrix</p></li>
+<li><p>B_j_q0 - Initial factor/component matrix for the variables</p></li>
+<li><p>C_k_r0 - Initial factor/component matrix for the occasions</p></li>
+<li><p>U_i_g - Final/updated object membership function matrix</p></li>
+<li><p>B_j_q - Final/updated factor/component matrix for the variables</p></li>
+<li><p>C_k_r - Final/updated factor/component matrix for the occasions</p></li>
+<li><p>Y_g_qr - Derived centroids in the reduced space (data matrix)</p></li>
+<li><p>X_i_jk_scaled - Standardized dataset matrix</p></li>
+<li><p>BestTimeElapsed - Execution time for the best iterate</p></li>
+<li><p>BestLoop - Loop that obtained the best iterate</p></li>
+<li><p>BestIteration - Iteration yielding the best results</p></li>
+<li><p>Converged - Flag to check if algorithm converged for the K-means</p></li>
+<li><p>nConverges - Number of loops that converged for the K-means</p></li>
+<li><p>TSS_full - Total deviance in the full-space</p></li>
+<li><p>BSS_full - Between deviance in the reduced-space</p></li>
+<li><p>RSS_full - Residual deviance in the reduced-space</p></li>
+<li><p>PF_full - PseudoF in the full-space</p></li>
+<li><p>TSS_reduced - Total deviance in the reduced-space</p></li>
+<li><p>BSS_reduced - Between deviance in the reduced-space</p></li>
+<li><p>RSS_reduced - Residual deviance in the reduced-space</p></li>
+<li><p>PF_reduced - PseudoF in the reduced-space</p></li>
+<li><p>PF - Weighted PseudoF score</p></li>
+<li><p>Labels - Object cluster assignments</p></li>
+<li><p>Fs - Objective function values for the KM best iterate</p></li>
+<li><p>Enorm - Average l2 norm of the residual norm.</p></li>
+</ul></div>
+    <div id="details">
+    <h2>Details</h2>
+    <p>The procedure performs simultaneously the sequential TWFCTA model.
+   The model finds B_j_q and C_k_r such that the within-clusters deviance of
+   the component scores is minimized.</p>
+    </div>
     <div id="references">
     <h2>References</h2>
     <p>Tucker L (1966).
@@ -98,16 +134,16 @@ Vichi M, Rocci R, Kiers H (2007).
 <span class="r-in"><span><span class="va">tfkmeans</span> <span class="op">=</span> <span class="fu">fit.3fkmeans</span><span class="op">(</span><span class="va">model</span>, <span class="va">X_i_jk</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8</span>,<span class="fl">5</span>,<span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">3</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Loop"            "Best Iter"       "Loop Time"       "BSS Full (%)"   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [5] "BSS Reduced (%)" "PF Full"         "PF Reduced"      "Converged"      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  1.0000  3.0000  0.0036 35.8500 35.8500  1.1523 12.6752  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0000  2.0000  0.0026 38.6700 38.6700  1.2429 13.6720  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  3.0000  1.0000  0.0077 40.6400 40.6400  1.3063 14.3697  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  4.0000  1.0000  0.0076 34.9300 34.9300  1.1228 12.3511  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  5.0000  1.0000  0.0032 31.9300 31.9300  1.0263 11.2893  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  6.0000  1.0000  0.0137 44.2900 44.2900  1.4236 15.6597  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  7.0000  1.0000  0.0090 28.7000 28.7000  0.9224 10.1466  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  8.0000  1.0000  0.0011 33.0700 33.0700  1.0631 11.6941  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  9.0000  2.0000  0.0081 34.9300 34.9300  1.1228 12.3511  0.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.0000  1.0000  0.0088 26.8500 26.8500  0.8632  9.4954  0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  1.0000  1.0000  0.0153 44.0100 44.0100  1.3569 14.9262  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.0000  1.0000  0.0077 49.6000 49.6000  1.5294 16.8231  0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  3.0000  3.0000  0.0025 49.5500 49.5500  1.5277 16.8051  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  4.0000  3.0000  0.0025 46.9800 46.9800  1.4488 15.9364  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  5.0000  2.0000  0.0025 40.1100 40.1100  1.2368 13.6051  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  6.0000  1.0000  0.0010 25.3400 25.3400  0.7813  8.5948  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  7.0000  1.0000  0.0017 53.2700 53.2700  1.6425 18.0677  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  8.0000  3.0000  0.0027 54.8000 54.8000  1.6899 18.5891  1.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  9.0000  1.0000  0.0124 39.2500 39.2500  1.2104 13.3139  0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10.0000  1.0000  0.0081 32.8600 32.8600  1.0132 11.1456  0.0000</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

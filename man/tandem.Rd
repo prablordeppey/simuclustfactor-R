@@ -2,7 +2,7 @@
 % Please edit documentation in R/tandem.R
 \name{tandem}
 \alias{tandem}
-\title{Initialization for the tandem models.}
+\title{Initializes an instance of the tandem model required by the tandem methods.}
 \usage{
 tandem(
   seed = NULL,
@@ -35,10 +35,18 @@ tandem(
 
 \item{C_k_r}{Initial component sores matrix for the occasions.}
 }
+\value{
+An object of class "tandem".
+}
 \description{
-Initialization for the tandem models.
+Initializes an instance of the tandem model required by the tandem methods.
 }
 \references{
 \insertRef{tandemModels}{simuclustfactor}
 \insertRef{tucker1966}{simuclustfactor}
+}
+\seealso{
+{
+ \code{\link{fit.twcfta}} \code{\link{fit.twfcta}} \code{\link{simultaneous}}
+}
 }

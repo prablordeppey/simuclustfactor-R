@@ -3,12 +3,7 @@
 0 errors | 0 warnings | 0 note
 
 * There was no note from the `R CMD check` command. I only get possibly mispelled words in the DESCRIPTION file from the rhub report. They are:
-  - Clus (15:94, 16:36, 16:84)
-  - FKMeans (15:104, 16:46)
-  - TWCFTA (14:93)
-  - TWFCTA (14:104)
-  
-* From running the `` command. I got a NOTE with possibly misplelle words given in the following
+
   - Arabie (14:749)
   - Clus (14:59, 14:365, 14:455, 14:614)
   - FKMeans (14:429, 14:633)

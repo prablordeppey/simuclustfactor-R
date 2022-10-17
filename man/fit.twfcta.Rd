@@ -18,9 +18,68 @@ fit.twfcta(model, X_i_jk, full_tensor_shape, reduced_tensor_shape)
 
 \item{reduced_tensor_shape}{Dimensions of tensor in the reduced space.}
 }
+\value{
+Output attributes accesible via the '@' operator.
+\itemize{
+  \item U_i_g0 - Initial object membership function matrix.
+  \item B_j_q0 - Initial factor/component matrix for the variables.
+  \item C_k_r0 - Initial factor/component matrix for the occasions.
+  \item U_i_g - Final/updated object membership function matrix.
+  \item B_j_q - Final/updated factor/component matrix for the variables.
+  \item C_k_r - Final/updated factor/component matrix for the occasions.
+  \item Y_g_qr - Derived centroids in the reduced space (data matrix).
+  \item X_i_jk_scaled - Standardized dataset matrix.
+  \item BestTimeElapsed - Execution time for the best iterate.
+  \item BestLoop - Loop that obtained the best iterate.
+  \item BestKmIteration - Number of iteration until best iterate for the K-means.
+  \item BestFaIteration - Number of iteration until best iterate for the FA.
+  \item FaConverged - Flag to check if algorithm converged for the K-means.
+  \item KmConverged - Flag to check if algorithm converged for the Factor Decomposition.
+  \item nKmConverges - Number of loops that converged for the K-means.
+  \item nFaConverges - Number of loops that converged for the Factor decomposition.
+  \item TSS_full - Total deviance in the full-space.
+  \item BSS_full - Between deviance in the reduced-space.
+  \item RSS_full - Residual deviance in the reduced-space.
+  \item PF_full - PseudoF in the full-space.
+  \item TSS_reduced - Total deviance in the reduced-space.
+  \item BSS_reduced - Between deviance in the reduced-space.
+  \item RSS_reduced - Residual deviance in the reduced-space.
+  \item PF_reduced - PseudoF in the reduced-space.
+  \item PF - Actual PseudoF value to obtain best loop.
+  \item Labels - Object cluster assignments.
+  \item FsKM - Objective function values for the KM best iterate.
+  \item FsFA - Objective function values for the FA best iterate.
+  \item Enorm - Average l2 norm of the residual norm.
+}
+}
 \description{
 Implements factorial reduction and then K-means clustering
 in a sequential fashion.
+}
+\details{
+{
+   The procedure implements sequential factorial decomposition and clustering.
+   \itemize{
+      \item The technique performs Tucker2 decomposition on the X_i_jk matrix
+      to obtain the matrix of component scores Y_i_qr with component weights
+      matrices B_j_q and C_k_r.
+      \item The K-means clustering algorithm is then applied to the component
+      scores matrix Y_i_qr to obtain the desired core centroids matrix Y_g_qr
+      and its associated stochastic membership function matrix U_i_g.
+   }
+}
+}
+\note{
+{
+   \itemize{
+      \item The technique helps interpret the within clusters variability of
+      the data. The Tucker2 tends to explain most of the total variation in
+      the dataset. Hence, the variance of variables that do not contribute to
+      the clustering structure in the dataset is also included.
+      \item The Tucker2 dimensions may still mask some essential clustering
+      structures in the dataset.
+   }
+}
 }
 \examples{
 X_i_jk = generate_dataset()$X_i_jk
@@ -31,4 +90,9 @@ twfCta = fit.twfcta(model, X_i_jk, c(8,5,4), c(3,3,2))
 \references{
 \insertRef{tandemModels}{simuclustfactor}
 \insertRef{tucker1966}{simuclustfactor}
+}
+\seealso{
+{
+ \code{\link{fit.twcfta}} \code{\link{tandem}}
+}
 }

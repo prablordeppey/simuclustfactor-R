@@ -35,8 +35,29 @@ simultaneous(
 
 \item{C_k_r}{Component matrix for the occasions.}
 }
+\value{
+An object of class "simultaneous".
+}
 \description{
-Model for the simultaneous methods.
+Initialize model object required by the simultaneous methods.
+}
+\details{
+{
+   Two simultaneous models T3Clus and 3FKMeans are the implemented methods.
+   \itemize{
+      \item T3Clus finds B_j_q and C_k_r such that the between-clusters
+      deviance of the component scores is maximized.
+     \item 3FKMeans finds B_j_q and C_k_r such that the within-clusters
+     deviance of the component scores is minimized.
+   }
+}
+}
+\note{
+{
+   The model finds the best partition described by the best orthogonal
+   linear combinations of the variables and orthogonal linear combinations
+   of the occasions.
+}
 }
 \examples{
 simultaneous()
@@ -45,4 +66,10 @@ simultaneous()
 \references{
 \insertRef{tucker1966}{simuclustfactor}
 \insertRef{VichiRocciKiers}{simuclustfactor}
+}
+\seealso{
+{
+ \code{\link{fit.t3clus}} \code{\link{fit.3fkmeans}}
+ \code{\link{fit.ct3clus}} \code{\link{tandem}}
+}
 }

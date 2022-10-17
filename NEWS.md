@@ -1,4 +1,4 @@
-# simuclustfactor 0.0.2
+# simuclustfactor 0.0.3
 
 * This version presents 5 clustering-factorial decomposition methods of which, 3 were fully implemented. Thus `TWCFTA`, `TWFCTA` and `CT3Clus` models.
 * `TWCFTA` is implemented for sequential/tandem clustering-factorial decomposition.

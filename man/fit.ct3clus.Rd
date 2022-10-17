@@ -32,9 +32,39 @@ fit.ct3clus(
 
 \item{alpha}{0<alpha>1 hyper parameter. Model is T3Clus when alpha=1 and 3FKMeans when alpha=0.}
 }
+\value{
+Output attributes accesible via the '@' operator.
+\itemize{
+   \item U_i_g0 - Initial object membership function matrix
+   \item B_j_q0 - Initial factor/component matrix for the variables
+   \item C_k_r0 - Initial factor/component matrix for the occasions
+   \item U_i_g - Final/updated object membership function matrix
+   \item B_j_q - Final/updated factor/component matrix for the variables
+   \item C_k_r - Final/updated factor/component matrix for the occasions
+   \item Y_g_qr - Derived centroids in the reduced space (data matrix)
+   \item X_i_jk_scaled - Standardized dataset matrix
+   \item BestTimeElapsed - Execution time for the best iterate
+   \item BestLoop - Loop that obtained the best iterate
+   \item BestIteration - Iteration yielding the best results
+   \item Converged - Flag to check if algorithm converged for the K-means
+   \item nConverges - Number of loops that converged for the K-means
+   \item TSS_full - Total deviance in the full-space
+   \item BSS_full - Between deviance in the reduced-space
+   \item RSS_full - Residual deviance in the reduced-space
+   \item PF_full - PseudoF in the full-space
+   \item TSS_reduced - Total deviance in the reduced-space
+   \item BSS_reduced - Between deviance in the reduced-space
+   \item RSS_reduced - Residual deviance in the reduced-space
+   \item PF_reduced - PseudoF in the reduced-space
+   \item PF - Weighted PseudoF score
+   \item Labels - Object cluster assignments
+   \item Fs - Objective function values for the KM best iterate
+   \item Enorm - Average l2 norm of the residual norm.
+}
+}
 \description{
 Implements simultaneous T3Clus and 3FKMeans integrating
-an alpha value
+an alpha value between 0 and 1 inclusive for a weighted result.
 }
 \examples{
 X_i_jk = generate_dataset()$X_i_jk
@@ -47,4 +77,9 @@ ct3clus = fit.ct3clus(model, X_i_jk, c(8,5,4), c(3,3,2), alpha=0.5)
 \insertRef{t3clus}{simuclustfactor}
 \insertRef{3FKMeans}{simuclustfactor}
 \insertRef{VichiRocciKiers}{simuclustfactor}
+}
+\seealso{
+{
+ \code{\link{fit.t3clus}} \code{\link{fit.3fkmeans}} \code{\link{simultaneous}}
+}
 }
