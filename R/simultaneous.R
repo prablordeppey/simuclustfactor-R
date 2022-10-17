@@ -212,7 +212,7 @@ setClass('ct3clus', contains='simultaneous')
 #' @param full_tensor_shape Dimensions of the tensor in full-space.
 #' @param reduced_tensor_shape Dimensions of tensor in the reduced-space.
 #'
-#' @return Output attributes accesible via the '@' operator.
+#' @return Output attributes accessible via the '@' operator.
 #' \itemize{
 #'    \item U_i_g0 - Initial object membership function matrix
 #'    \item B_j_q0 - Initial factor/component matrix for the variables
@@ -276,7 +276,7 @@ setGeneric('fit.t3clus', function(model, X_i_jk, full_tensor_shape, reduced_tens
 #' @param full_tensor_shape Dimensions of the tensor in full-space.
 #' @param reduced_tensor_shape Dimensions of tensor in the reduced-space.
 #'
-#' @return Output attributes accesible via the '@' operator.
+#' @return Output attributes accessible via the '@' operator.
 #' \itemize{
 #'    \item U_i_g0 - Initial object membership function matrix
 #'    \item B_j_q0 - Initial factor/component matrix for the variables
@@ -343,7 +343,7 @@ setGeneric('fit.3fkmeans', function(model, X_i_jk, full_tensor_shape, reduced_te
 #' @param reduced_tensor_shape Dimensions of tensor in the reduced space.
 #' @param alpha 0<alpha>1 hyper parameter. Model is T3Clus when alpha=1 and 3FKMeans when alpha=0.
 #'
-#' @return Output attributes accesible via the '@' operator.
+#' @return Output attributes accessible via the '@' operator.
 #' \itemize{
 #'    \item U_i_g0 - Initial object membership function matrix
 #'    \item B_j_q0 - Initial factor/component matrix for the variables

@@ -204,7 +204,7 @@ setClass('twfcta', contains='tandem')
 #' @param full_tensor_shape Dimensions of the tensor in full space.
 #' @param reduced_tensor_shape Dimensions of tensor in the reduced space.
 #'
-#' @return Output attributes accesible via the '@' operator.
+#' @return Output attributes accessible via the '@' operator.
 #' \itemize{
 #'   \item U_i_g0 - Initial object membership function matrix.
 #'   \item B_j_q0 - Initial factor/component matrix for the variables.
@@ -297,7 +297,7 @@ setGeneric('fit.twcfta',
 #' @param full_tensor_shape Dimensions of the tensor in full space.
 #' @param reduced_tensor_shape Dimensions of tensor in the reduced space.
 #'
-#' @return Output attributes accesible via the '@' operator.
+#' @return Output attributes accessible via the '@' operator.
 #' \itemize{
 #'   \item U_i_g0 - Initial object membership function matrix.
 #'   \item B_j_q0 - Initial factor/component matrix for the variables.

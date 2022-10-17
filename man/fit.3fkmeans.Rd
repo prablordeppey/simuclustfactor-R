@@ -19,7 +19,7 @@ fit.3fkmeans(model, X_i_jk, full_tensor_shape, reduced_tensor_shape)
 \item{reduced_tensor_shape}{Dimensions of tensor in the reduced-space.}
 }
 \value{
-Output attributes accesible via the '@' operator.
+Output attributes accessible via the '@' operator.
 \itemize{
    \item U_i_g0 - Initial object membership function matrix
    \item B_j_q0 - Initial factor/component matrix for the variables

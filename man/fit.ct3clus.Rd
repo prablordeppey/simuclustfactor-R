@@ -33,7 +33,7 @@ fit.ct3clus(
 \item{alpha}{0<alpha>1 hyper parameter. Model is T3Clus when alpha=1 and 3FKMeans when alpha=0.}
 }
 \value{
-Output attributes accesible via the '@' operator.
+Output attributes accessible via the '@' operator.
 \itemize{
    \item U_i_g0 - Initial object membership function matrix
    \item B_j_q0 - Initial factor/component matrix for the variables
