@@ -256,7 +256,7 @@ setClass('twfcta', contains='tandem')
 #'       that most contribute to discriminate the clusters. However, the application
 #'       of this technique could lead to the masking of variables that are not
 #'       informative of the clustering structure.
-#'       \item since the Tucker2 model is applied after the clustering, this
+#'       \item Since the Tucker2 model is applied after the clustering, this
 #'       cannot help select the most relevant information for the clustering in
 #'       the dataset.
 #'    }

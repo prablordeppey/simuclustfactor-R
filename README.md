@@ -41,10 +41,15 @@ Y_g_qr = data$Y_g_qr  # centroids matrix in the reduced space.
 Z_i_jk = data$Z_i_jk  # score/centroid matrix in the full-space.
 X_i_jk = data$X_i_jk  # dataset with noise.
 
-# Ground-truth associations
+# Ground-truth parameters
 U_i_g = data$U_i_g  # binary stochastic membership matrix
 B_j_q = data$B_j_q  # variables factor matrix
 C_k_r = data$C_k_r  # occasions factor matrix
+
+# Ground-truth associations
+U_i_g = data$U_labels  # array of clusters for objects
+B_j_q = data$B_labels  # array of factors for each variable
+C_k_r = data$C_labels  # array of factors for each occasion
 
 # Folding generated data matrices into tensors
 X_i_j_k = fold(X_i_jk, mode=1, shape=c(I,J,K))

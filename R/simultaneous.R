@@ -242,12 +242,17 @@ setClass('ct3clus', contains='simultaneous')
 #' }
 #'
 #' @details {
-#'    The procedure performs simultaneously the sequential TWCFTA model.
-#'    The model finds B_j_q and C_k_r such that the between-clusters deviance of
+#'    The procedure performs simultaneously the sequential TWCFTA model,
+#'    finding B_j_q and C_k_r such that the between-clusters deviance of
 #'    the component scores is maximized.
 #' }
 #'
 #' @export
+#'
+#' @seealso {
+#'  \code{\link{fit.ct3clus}} \code{\link{fit.3fkmeans}} \code{\link{simultaneous}}
+#' }
+#'
 #' @name fit.t3clus
 #' @rdname fit.t3clus
 #'
@@ -312,6 +317,10 @@ setGeneric('fit.t3clus', function(model, X_i_jk, full_tensor_shape, reduced_tens
 #' }
 #'
 #' @export
+#'
+#' @seealso {
+#'  \code{\link{fit.t3clus}} \code{\link{fit.ct3clus}} \code{\link{simultaneous}}
+#' }
 #'
 #' @importFrom Rdpack reprompt
 #'
